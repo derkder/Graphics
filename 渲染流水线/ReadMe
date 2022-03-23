@@ -1,0 +1,6 @@
+从MVP变换将几何空间的顶点变换到屏幕上（Vertex processing），然后连线出三角形（Triangle processing），再通过光栅化（Rasterization）
+找到被几何体包住的像素点，即把这个三角形离散成为一堆像素点，有了像素点之后我们再通过深度测试和抗锯齿，给像素点渲染好对应的颜色。
+
+
+（着色这步可以在顶点处着色也可以在每个像素点上着色，如果是在顶点上那就和mvp变换一起在vertex processing里，如果是Phong shading的话那
+就在Frament Processing，这里Frament其实就是像素点，每个像素点都代表一块片段嘛。这部分的着色方式可以自定义，这部分可自主编程的代码就叫做shader。）
