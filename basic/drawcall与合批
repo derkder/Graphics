@@ -7,6 +7,8 @@ draw call是openGL的描绘次数
 每帧都会重复以上的步骤。这就是一次draw call
 
 
+个人估计unity3d的dynamic batch,static batch都是通过一定的方法使不同的object的顶点座标能够结合成一个整体，达到减少draw calls的效果。
+但是有一定的要求限制，比如material要相同，mesh要相同并在300个面以内等等，这些都是为了保证openGl的状态值不改变。
 Unity在 Player Setting 里的两个功能选项 Static Batching 与 Dynamic Batching。功能描述如下：
 Static Batching 是将标明为 Static 的静态物件，如果在使用相同材质球的条件下，Unity 会自动帮你把这两个物件合并成一个 Batch，送往 GPU 来处理。这功能对效能上非常的有帮助，所以是需要付费才有的。
 Dynamic Batching 是在物件小于300面的条件下(不论物件是否为静态或动态)，在使用相同材质球下，Unity就会自动帮你合合并成一个 Batch 送往 GPU 来处理。
