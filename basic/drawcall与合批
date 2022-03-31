@@ -6,7 +6,7 @@ draw call是openGL的描绘次数
 一个简单的openGL的绘图次序是：设置颜色→绘图方式→顶点座标→绘制→结束。
 每帧都会重复以上的步骤。这就是一次draw call
 
-
+动态合批与静态合批其本质是对将多次绘制请求，在允许的条件下进行合并处理，减少cpu对gpu绘制请求的次数，达到提高性能的目的。
 个人估计unity3d的dynamic batch,static batch都是通过一定的方法使不同的object的顶点座标能够结合成一个整体，达到减少draw calls的效果。
 但是有一定的要求限制，比如material要相同，mesh要相同并在300个面以内等等，这些都是为了保证openGl的状态值不改变。
 Unity在 Player Setting 里的两个功能选项 Static Batching 与 Dynamic Batching。功能描述如下：
