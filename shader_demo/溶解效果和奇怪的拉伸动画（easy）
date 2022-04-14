@@ -30,7 +30,7 @@ Shader "Custom/simple"{
 
                     v2f vertexFunction(a2v v) {
                         v2f o;
-                        v.vertex.xyz += v.normal.xyz * _ExtrudeAmount * sin(_Time.y);
+                        v.vertex.xyz += v.normal.xyz * _ExtrudeAmount * sin(_Time.y);//_Time是一个代表时间的变量被包含在UnityCH.cginc
                         o.position = UnityObjectToClipPos(v.vertex);
                         o.uv = v.uv;
                         return o;
