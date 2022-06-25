@@ -2,6 +2,11 @@ Shader "Unity Shaders Book/Chapter 5/Simple Shader Struct"
 {
     SubShader
     {
+        Properties
+        {
+            // 声明一个Color类型的属性
+            _Color("Color Tint", Color) = (1.0, 1.0, 1.0, 1.0)
+        }
         Pass
         {
             CGPROGRAM
@@ -35,7 +40,7 @@ Shader "Unity Shaders Book/Chapter 5/Simple Shader Struct"
                 // 从结构体中取当前顶点的模型空间坐标，将其转为裁剪空间下的坐标
                 return UnityObjectToClipPos(v.vertex);
             }
-
+            // 通过SV_Target语义，告诉渲染器，把用户的输出颜色存储到一个渲染目标中（比如：帧缓存中）
             fixed4 frag() : SV_Target
             {
                 return fixed4(1.0, 1.0, 1.0, 1.0);
