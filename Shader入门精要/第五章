@@ -34,19 +34,39 @@ Shader "Unity Shaders Book/Chapter 5/Simple Shader Struct"
             // Unity支持的语义有：
             // POSITION 、 NORMAL 、 TANGENT 、 TEXCOORD0 、 TEXCOORD1 、 TEXCOORD2 、 TEXCOORD3 、 COLOR 等
 
-            // 使用结构体作为输入参数，不需要写语义，因为语义在结构体里已经声明了
-            float4 vert(a2v v) : SV_POSITION
+             // 使用该结构体定义顶点着色器的输出
+            struct v2f
             {
-                // 从结构体中取当前顶点的模型空间坐标，将其转为裁剪空间下的坐标
-                return UnityObjectToClipPos(v.vertex);
-            }
-            // 通过SV_Target语义，告诉渲染器，把用户的输出颜色存储到一个渲染目标中（比如：帧缓存中）
-            fixed4 frag() : SV_Target
+                // SV_POSITION语义表示：pos存储了顶点在裁剪空间中的位置信息
+                float4 pos : SV_POSITION;
+                // COLOR0语义用于存储颜色信息，当需要存储更多颜色时，可继续用 COLOR1 、 COLOR2等
+                fixed3 color : COLOR0;
+            };
+            //顶点着色器中最基本的任务是把顶点坐标从模型空间转换到裁剪空间，通常可以直接使用内置的MVP矩阵来实现。
+            v2f vert(a2v v)
             {
-                return fixed4(1.0, 1.0, 1.0, 1.0);
+                // 声明输出结构
+                v2f o;
+                o.pos = UnityObjectToClipPos(v.vertex);
+                
+                // 将法线的值转变成颜色值，呈现到模型上（这里没有必然的法线和颜色的转换关系，仅作案例演示，无需纠结此段代码）
+                // 因为法线方向，各分量范围是[-1, 1]，为了让其转变到颜色的范围[0, 1]，故做如下运算：
+                o.color = v.normal * 0.5 + fixed3(0.5, 0.5, 0.5);
+                return o;
             }
 
+            // 将顶点输出的结构体传入片元着色器中
+            fixed4 frag(v2f i) : SV_Target
+            {
+                // 结构体里定义的color是fixed3类型（我们也可以将其定义为fixed4类型）
+                // 输出的颜色为fixed4类型，所以需要补上第四个分量
+                return fixed4(i.color, 1.0);
+            }
             ENDCG
         }
     }
 }
+
+
+顶点着色器是逐顶点调用的，片元着色器是逐片元（像素）调用的
+这意味着顶点着色器的调用次数远远小于片元着色器。为了让每个片元着色器都能有一个结构体的输入，Unity会将非顶点像素的片元着色器的输入结构体的数据由顶点着色器的输出经过插值后得到结果。
