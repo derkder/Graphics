@@ -20,3 +20,29 @@
 也就是说纹理映射分为两个过程, 一个是坐标转换, 一个是纹理采样.
 通常情况下, 坐标转换的过程是引擎自己完成的(直接使用图形API则需要自行转换), 这个过程也比较简单, 就是将物体表面与纹理进行1:1匹配, 就像上文所说, 将物体矩形表面的四个顶点与纹理的四个顶点锚定而已.
 也就是说, 引擎传给顶点shader的纹理坐标, 已经是做过1:1匹配之后的结果
+
+
+
+
+
+
+
+
+补充【TRANSFORM_TEX】
+引擎给我们提供了基础的顶点纹理坐标, 我们如果不做任何处理的情况下, 纹理将充满整个表面, 而TRANSFORM_TEX接口可以对纹理坐标做二次处理(缩放和位移)以达到一些更复杂的效果.
+因为引擎提供给我们的顶点纹理坐标是1:1映射, 坐标范围基本上不会超过[0, 1], 但是通过TRANSFORM_TEX之后的坐标很可能会处于[0, 1]之外. 比如Tiling.x = 2会造成所有的uv坐标的x坐标放大两倍,
+这样的坐标在纹理上是取不到值的.
+
+struct appdata
+{
+    float4 vertex : POSITION;
+    float2 uv : TEXCOORD0;
+};
+
+v2f vert (appdata v)
+{
+    v2f o;
+    o.vertex = UnityObjectToClipPos(v.vertex);
+    o.uv = TRANSFORM_TEX(v.uv, _MainTex);
+    return o;
+}
