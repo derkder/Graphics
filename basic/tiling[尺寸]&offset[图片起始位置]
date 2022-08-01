@@ -1,3 +1,7 @@
+"Tiling(瓦片)"对应_MainTex_ST的xy分量, "Offset(偏移)"对应_MainTex_ST的zw分量.
+
+
+
 Tiling确定你要取的图片范围。
 如果Tiling.x 和 Tiling.y 的值都为0.5，那么你要取的图片就是 0.5*0.5 大小；
 如果Tiling.x 和 Tiling.y 的值都为1，那么你要取的图片就是一整张图片大小；
