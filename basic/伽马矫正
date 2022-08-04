@@ -1,0 +1,18 @@
+https://zhuanlan.zhihu.com/p/484571648
+把伽马空间变成线性空间的过程就是伽马校正
+
+
+
+
+为什么要Gamma校正：
+Gamma=0.45是给电脑看的，这样会省存储空间，但是人眼看起来不舒服（太亮了）
+Gamma=2.2是给人眼看的，这样会增加存储空间，但是人眼看起来舒服
+(gamma2.2的颜色空间叫做sRGB颜色空间)
+
+
+
+
+在unity中，projectSetting中你可以选择Gamma【不会对输入和输出做出任何处理】或Linear【引擎的渲染流程在线性空间计算】作为ColorSpace
+以及对于贴图勾不勾选sRGB（默认在Gamma空间下）：
+1、给人眼看的，需要在显示器上进行最终显示的贴图，勾选。如：base color、
+2、给电脑看的，需要拿来进行计算贴图，不勾选。如：Metallic、Roughness、Normal、noise、
