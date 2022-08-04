@@ -56,8 +56,9 @@ fixed4 frag (v2f i) : SV_Target
 
 
 '''
-tex2d 采样纹理，在vs中不可用
-tex2dlod 根据采样点坐标和mip级别，计算偏移值，然后采样，在vs/fs中均可用 （lod -- Level-of-detail）
+tex2Dproj和tex2D这两个功能几乎相同。
+唯一的区别是，在对纹理进行采样之前，tex2Dproj将输入的UV xy坐标除以其w坐标。这是将坐标从正交投影转换为透视投影。
+那么什么时候使用前者：我们知道,裁剪空间的坐标经过缩放和偏移后就变成了(0,ｗ),而当分量除以分量W以后,就变成了(0,1),这样在计算需要返回(0,1)值的时候,就可以直接使用tex2Dproj了.
 tex2dproj 与tex2d基本一样，只是在采样前，tex2Dproj将输入的UV xy坐标除以其w坐标，将坐标映射到透视投影（裁剪空间坐标分量w归一的时候使用）
 tex2dbias 在偏移mipmap级别（lod bias）后对贴图进行采样, 用于对图像采样结果模糊或锐化
 '''
