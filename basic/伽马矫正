@@ -16,3 +16,18 @@ Gamma=2.2是给人眼看的，这样会增加存储空间，但是人眼看起�
 以及对于贴图勾不勾选sRGB（默认在Gamma空间下）：
 1、给人眼看的，需要在显示器上进行最终显示的贴图，勾选。如：base color、
 2、给电脑看的，需要拿来进行计算贴图，不勾选。如：Metallic、Roughness、Normal、noise、
+
+
+
+
+
+
+
+
+
+
+
+补充：
+线性空间：颜色按线性渐变的空间
+Gamma空间：暂时理解为颜色不按线性渐变的空间
+https://www.cnblogs.com/guanzz/p/7416821.html
