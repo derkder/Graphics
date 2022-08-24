@@ -1,0 +1,5 @@
+在U3D中有一种特殊的Texture类型，叫做RenderTexture，它本质上一句话是将一个FrameBufferObjecrt【gpu里渲染结果的目的地】连接到一个server-side【gpu-side】的Texture对象。
+
+什么是server-sider的texture？
+在渲染过程中，贴图最开始是存在cpu这边的内存中的，这个贴图我们通常称为client-side的texture，它最终要被送到gpu的存储里，gpu才能使用它进行渲染，送到gpu里的那一份被称为server-side的texture。这个tex在cpu和gpu之间拷贝要考虑到一定的带宽瓶颈。
+
