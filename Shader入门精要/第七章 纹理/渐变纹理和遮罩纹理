@@ -22,4 +22,9 @@
 
 
 
+
+
+补充:
+一般涉及到纹理会定义一个sampler2D用于装纹理以及一个float4 _xxx_ST用于定义tiling和offset
+
 链接：https://zhuanlan.zhihu.com/p/450087985
