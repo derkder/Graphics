@@ -10,7 +10,7 @@ https://zhuanlan.zhihu.com/p/447311831
 
 
 
-另一种思路：
+另一种思路(貌似上面的更好)：
 https://www.patreon.com/posts/grass-geometry-1-40090373
 交互性是通过获取玩家位置并使用 _Radius 属性计算其周围的球体来完成的，使用它来置换草叶。
 .cs：
