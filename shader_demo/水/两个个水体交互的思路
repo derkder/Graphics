@@ -1,4 +1,6 @@
 https://zhuanlan.zhihu.com/p/447311831
+粒子系统【粒子加在玩家身上，玩家就可以和水体交互了】不断发射带有波纹法线贴图的面片，然后把这些法线渲染一张RenderTexture传输到Water Shader中，然后和Water Normal 叠加即可形成水波效果。
+也就是通信靠只能观察到带有粒子的玩家的camera用绑在自己身上和水身上的rendertexture告诉水
 1、在场景创建一个Camera，该Camera只渲染特定的Layer，即水波法线（waterwave）【Culling Mask 设置为WaterWave】，创建一个RenderTexture，拖拽到这个相机的Target Texture上
 2.创建一个Shader，命名为WaterRing，该Shader用于渲染水波法线。
 3.继续创建一个粒子系统，材质Shader设置为刚才创建的WaterRing Shader，并且该粒子的Layer需要修改为WaterWave。
