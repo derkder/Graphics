@@ -1,0 +1,28 @@
+https://zhuanlan.zhihu.com/p/447311831
+1、在场景创建一个Camera，该Camera只渲染特定的Layer，即水波法线（waterwave）【Culling Mask 设置为WaterWave】，创建一个RenderTexture，拖拽到这个相机的Target Texture上
+2.创建一个Shader，命名为WaterRing，该Shader用于渲染水波法线。
+3.继续创建一个粒子系统，材质Shader设置为刚才创建的WaterRing Shader，并且该粒子的Layer需要修改为WaterWave。
+
+
+
+
+
+
+
+
+另一种思路：
+https://www.patreon.com/posts/grass-geometry-1-40090373
+交互性是通过获取玩家位置并使用 _Radius 属性计算其周围的球体来完成的，使用它来置换草叶。
+using UnityEngine;
+public class ShaderInteractor : MonoBehaviour{
+    void Update(){
+        Shader.SetGlobalVector("_PositionMoving", transform.position);
+    }
+}
+
+
+
+
+
+
+
