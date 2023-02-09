@@ -1,0 +1,13 @@
+一般情况下，我们可以将BRDF分为两类：
+
+各项同性（Isotropic）的BRDF：
+  反射不受与给定表面法向夹角的约束
+  随机表面微结构
+
+各向异性（Anisotropic）的BRDF：
+  反射比随着与某个给定的表面法向之间的夹角而变化
+  图案的表面微结构
+  金属丝，绸缎，毛发等
+  
+  
+Phong和Cook-Torrance BRDF模型都不能处理各项异性的效果，Ward模型却可以。但没有考虑菲涅耳因子（Fresnel factor）和几何衰减因子（geometric attenuation factor）
