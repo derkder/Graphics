@@ -23,4 +23,7 @@ e.g.cook-torrence[微平面折射模型]、Ward BRDF
 3、微平面【microfacets】理论：
     设表面是由不同方向的微小细节表面，也就是微平面组成。每一个微小的平面都会根据它的法线方向在一个方向上反射光线。
     法线分布函数（NDF），可以这样理解：向NDF输入一个朝向h，NDF会返回朝向是h的微表面数占微表面总数的比例，比如有8%的微表面朝向是h，那么就有8%的微表面可能将光线反射到v方向。
-    
+cook-torrence： f(l,v)=F(l,h)G(l,v,h)D(h)/4(n·l)(n·v)
+    F为菲涅尔反射函数( Fresnel 函数 )
+    G为阴影遮罩函数（Geometry Factor，几何因子），即未被shadow或mask的比例
+    D为法线分布函数(NDF)[微平面理论]
