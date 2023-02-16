@@ -4,3 +4,7 @@
 
 （着色这步可以在顶点处着色也可以在每个像素点上着色，如果是在顶点上那就和mvp变换一起在vertex processing里，如果是Phong shading的话那
 就在Frament Processing，这里Frament其实就是像素点，每个像素点都代表一块片段嘛。这部分的着色方式可以自定义，这部分可自主编程的代码就叫做shader。）
+
+
+！！cull off剔除是剔除不可见的物体
+！！clipping裁剪是裁剪图元【例如对着一个三角形图元剪一刀】
