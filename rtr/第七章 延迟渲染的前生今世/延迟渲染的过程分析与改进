@@ -6,3 +6,14 @@
 使用第一步在 G-buffer 中存储的数据对此矩阵的每一个片段计算场景的光照；光照计算的过
 程还是和正向渲染以前一样，只是现在我们需要从对应的 G-buffer 而不是顶点着色器(和一些
 uniform 变量)那里获取输入变量了。
+
+
+
+
+
+
+
+常见的两种改进：
+一些降低 Deferred Rendering 存取带宽的改进方案。
+最简单也是最容易想到的就是将存取的 G-Buffer 数据结构最小化，这也就衍生出了Light Pre-Pass（即 Deferred Lighting） 方法。
+另一种方式是将多个光照组成一组，然后一起处理，这种方法衍生了 Tile-Based Deferred Rendering。
