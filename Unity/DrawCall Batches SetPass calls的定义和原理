@@ -11,4 +11,4 @@ Batches( 批处理 )是什么：
 
 SetPass calls是什么？
 官网解释：渲染 pass 的数量。每个 pass 都需要 Unity 运行时绑定一个新的着色器。
-【pass是先后渲染的通道不是每个设备对应一个的那个】
+【pass是先后渲染的通道不是每个设备对应一个的那个，那个叫subshader】
