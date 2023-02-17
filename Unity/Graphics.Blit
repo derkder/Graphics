@@ -1,1 +1,6 @@
-
+用着色器将source texture复制到目标render texture中。 
+没看懂的两个函数的参数：
+    sourceDepthSlice：	The texture array source slice to perform the blit from.
+    destDepthSlice：	The texture array destination slice to perform the blit to.
+    
+public static void Blit(Texture source, RenderTexture dest, Vector2 scale, Vector2 offset, int sourceDepthSlice, int destDepthSlice)
