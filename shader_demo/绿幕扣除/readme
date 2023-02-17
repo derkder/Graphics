@@ -1,0 +1,3 @@
+原本的方法：
+  原来的逻辑：将rgb空间转换到YCbCr空间，对于每一个片元通过计算绿幕色key和当前片元对应的YCbCr值进行剔除片元
+  想做的优化：对单颜色先做ChromaKey，然后用Despill把人身上的绿色环境光和边缘溢色处理一下https://blog.csdn.net/newchenxf/article/details/119575690
