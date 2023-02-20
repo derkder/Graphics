@@ -6,3 +6,11 @@
 用来测试的绿幕视频：
   https://www.videvo.net/video/woman-in-vr-headset-on-greenscreen/7816/
   这个网站上的视频貌似还蛮好用
+
+
+最后的代码解说：
+  在原来算法【http://gc-films.com/chromakey.html】转化成YCrCb的基础上，用高斯滤波平滑，并用Despill消除green bleeding
+  代码来源：https://github.com/otdavies/UnityChromakey
+  ps，原来的算法逻辑：/将rgb空间转换到YCbCr空间，计算mask，像keycolour的地方返回0，超级不像的返回1，中间的返回(temp-tola2)/(tolb2-tola2)，result=colour*mask
+  
+            }
