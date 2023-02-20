@@ -139,7 +139,7 @@ Shader "Unlit/ChromaKey"
                 // Unfeathered mask
                 float mask = maskedTex2D(_MainTex, i.uv);
 
-                // Feathering & smoothing高斯平滑
+                // Feathering & smoothing高斯平滑，用来降噪的好像是
                 float c = mask;
 		//下面把句话相当于用一个卷积（也就是一个3*3的举证去扫描这个像素，用得到的邻域内像素的加权平均灰度值去替代模板中心像素点的值）
                 float r = maskedTex2D(_MainTex, i.uv + pixelWidth);
@@ -158,6 +158,7 @@ Shader "Unlit/ChromaKey"
                 // Despill,关了之后周边有绿光，但是不泛红了，double blue average
                 float v = (2*result.b+result.r)/3;//按公式来说是除3，但是作者写的除4，不知道为嘛，我又给他改回来了
                 if(result.g > v) result.g = lerp(result.g, v, _Despill);
+		//改亮度luminance来修正Despill算法得到的图像会片暗，https://benmcewan.com/blog/2018/05/20/understanding-despill-algorithms/
                 float4 dif = (color - result);
                 float desaturatedDif = rgb2y(dif.xyz);
                 result += lerp(0, desaturatedDif, _DespillLuminanceAdd);
