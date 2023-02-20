@@ -1,6 +1,6 @@
 // Created by Oliver Davies. Enjoy. 
 // oliver@psyfer.io
-//在原来算法【http://gc-films.com/chromakey.html】转化成YCrCb的基础上，用高斯滤波平滑，并用Despill消除green bleeding
+//在原来算法【http://gc-films.com/chromakey.html】转化成YCrCb的基础上，用高斯滤波平滑，并用Despill消除green bleeding，最后改亮度luminance来修正Despill算法得到的图像会偏暗
 //现在的参数效果一级棒
 //实践https://blog.csdn.net/newchenxf/article/details/119575690
 Shader "Unlit/ChromaKey"
