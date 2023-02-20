@@ -141,6 +141,7 @@ Shader "Unlit/ChromaKey"
 
                 // Feathering & smoothing高斯平滑
                 float c = mask;
+		//下面把句话相当于用一个卷积（也就是一个3*3的举证去扫描这个像素，用得到的邻域内像素的加权平均灰度值去替代模板中心像素点的值）
                 float r = maskedTex2D(_MainTex, i.uv + pixelWidth);
                 float l = maskedTex2D(_MainTex, i.uv - pixelWidth);
                 float d = maskedTex2D(_MainTex, i.uv + pixelHeight); 
