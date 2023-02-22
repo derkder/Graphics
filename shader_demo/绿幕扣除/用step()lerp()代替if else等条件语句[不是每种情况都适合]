@@ -1,0 +1,27 @@
+绿幕扣除中，把画面分为三块，接近key colour的，远离key colour的，不远不近key colour的
+原shader对所有区域都进行了Despill算法防止图形周围出现green bleeding，其实只要对边缘进行这个处理就好了
+e.g.【https://blog.csdn.net/liu_if_else/article/details/77455639】
+//边缘判定
+				float edge=max(dot(i.N,i.V),0);
+				edge=step(edge,_Edge); //if(edge<=_Edge) edge=1 , else edge=0
+				_EdgeColor*=edge;
+				
+				//高光判定
+				float specularLight=pow(max(dot(i.N,i.H),0),_Shininess);
+				specularLight=step(0.95f,specularLight);		//if specularLight>=0.95f specularLight=1 else =0
+
+				//暗光判定
+				float diffuseLight=max(dot(i.N,i.L),0);
+				diffuseLight=step(0.1f,diffuseLight); //if(diffuseLight>=0.1f) diffuseLight=1   else diffuseLight=0
+为什么用if else不好：
+  if和for之所以比预想的要慢，是因为GPU的“进行计算的运算单元”和“执行指令的逻辑单元”并不是一对一对应的，而是一对多的关系。
+当你执行一条指令的时候，并不是操作一个像素，而是同时操作一组像素，并一条一条指令向下执行。
+  如果你的代码里出现了if，在这组像素中，可能有条件表达式返回true的，也可能有返回false的。但只要有一个返回true，下面那条代码就必须执行。
+而那些不需要执行的像素点，虽然这次并不需要计算，但也没有其他的逻辑单元可以与它们配对工作，所以也只能干等。
+https://www.sohu.com/a/219886389_667928
+
+
+
+不适合改成step的情况：
+当那组像素内，如果所有c.a > 0.5的判断都返回false的话，就意味着下面那条指令计算的结果全部都会抛弃。这种时候，GPU还是会正常的跳过这条语句。
+也就是同一批像素全部c.a <= 0.5
