@@ -1,0 +1,34 @@
+光线追踪：
+  主要思想：
+    是从视点向成像平面上的像素发射光线，找到与该光线相交的最近物体的交点，如果该点处的表面是散射面，则计算光源直接照射该点产生的颜色；如果该点处表面是镜面或折射面，
+  则继续向反射或折射方向跟踪另一条光线，如此递归下去，直到光线逃逸出场景或达到设定的最大递归深度。
+  伪代码：
+    for each pixel of the screen
+   {
+    Final color = 0;
+          Ray = { starting point, direction };
+          Repeat
+          {
+                  for each object in the scene
+                  {
+                        determine closest ray object/intersection;
+                  }
+                  if intersection exists
+                  {
+                        for each light inthe scene
+                        {
+                                if the light is not in shadow of anotherobject
+                                {
+                                        addthis light contribution to computed color;
+                                }
+                         }
+                   }
+                 Final color = Final color + computed color * previous reflectionfactor;
+                 reflection factor = reflection factor * surface reflectionproperty;
+                 increment depth;
+        } until reflection factor is 0 or maximumdepth is reached
+  }
+
+  
+  
+ 
