@@ -1,5 +1,6 @@
 绿幕扣除中，把画面分为三块，接近key colour的，远离key colour的，不远不近key colour的
 原shader对所有区域都进行了Despill算法防止图形周围出现green bleeding，其实只要对边缘进行这个处理就好了
+但是貌似就算是这个场景，最好也别判断，step也别用，因为是一口气操作好多顶底的
 e.g.【https://blog.csdn.net/liu_if_else/article/details/77455639】
 //边缘判定
 				float edge=max(dot(i.N,i.V),0);
