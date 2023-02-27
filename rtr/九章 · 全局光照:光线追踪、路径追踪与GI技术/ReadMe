@@ -15,11 +15,11 @@
                   }
                   if intersection exists
                   {
-                        for each light inthe scene
+                        for each light in the scene
                         {
                                 if the light is not in shadow of anotherobject
                                 {
-                                        addthis light contribution to computed color;
+                                        add this light contribution to computed color;
                                 }
                          }
                    }
