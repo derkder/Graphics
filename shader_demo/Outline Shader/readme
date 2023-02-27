@@ -4,3 +4,5 @@
   我们将以X形从深度缓冲区中取样像素，大致以当前正在渲染的像素为中心。
 第二种：法线
   附在相机上的是一个叫做RenderReplacementShaderToTexture的脚本，设置为生成一个相机，将场景的视图空间法线渲染到_CameraNormalsTexture。我们将再次采取这些样本之间的差异来检测轮廓。
+第三种：边缘检测算子
+  https://zhuanlan.zhihu.com/p/555969528
