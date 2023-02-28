@@ -22,3 +22,4 @@ Uniform:
                    void main(){gl_position=vec4(gScale*position.x,gScale*position.y,.....)}
       main.cpp中将vs fs都塞到shaderProgram链接编译完后：
                    gScaleLocation=glGetUniformLocation(ShaderProgram,"gScale");
+                   glUniform1f(gScaleLocation, sinf(Scale));
