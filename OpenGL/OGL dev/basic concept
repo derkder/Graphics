@@ -17,3 +17,8 @@ VBO:
 Uniform:
   一致变量的值在整个draw call中保持不变。这意味着你在draw call之前加载一直变量的值之后，你可以在每一个顶点着色器引入的时候总可以取得相同的值。
  一致变量主要的作用是保存像光照参数（光的位置和方向等）、变换矩阵、材质对象的handle等数据。
+  可以在cpp与shader中传递e.g.
+      shader.vs中：uniform float gScale;
+                   void main(){gl_position=vec4(gScale*position.x,gScale*position.y,.....)}
+      main.cpp中将vs fs都塞到shaderProgram链接编译完后：
+                   gScaleLocation=glGetUniformLocation(ShaderProgram,"gScale");
