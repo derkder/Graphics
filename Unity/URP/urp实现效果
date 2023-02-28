@@ -1,0 +1,2 @@
+遮挡效果：创建一个渲染器功能来绘制游戏对象后面的角色（用layer辨别）
+https://docs.unity3d.com/cn/Packages/com.unity.render-pipelines.universal@12.1/manual/renderer-features/how-to-custom-effect-render-objects.html
