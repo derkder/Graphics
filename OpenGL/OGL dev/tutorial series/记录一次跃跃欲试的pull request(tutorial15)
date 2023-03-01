@@ -22,5 +22,7 @@
     snprintf(game_mode_string, sizeof(game_mode_string), "%dx%d@60", WINDOW_WIDTH, WINDOW_HEIGHT);
     glutGameModeString(game_mode_string);
     glutEnterGameMode();
-
     ...
+
+
+however:tutorial窗口和gamemode同时开启就不会有问题
