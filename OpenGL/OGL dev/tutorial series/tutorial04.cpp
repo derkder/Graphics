@@ -39,13 +39,13 @@ static void AddShader(GLuint ShaderProgram, const char* pShaderText, GLenum Shad
         fprintf(stderr, "Error creating shader type %d\n", ShaderType);
         exit(0);
     }
-    //ÔÚ±àÒëshader¶ÔÏóÖ®Ç°±ØĞëÏÈ¶¨ÒåËüµÄ´úÂëÔ´
+    //åœ¨ç¼–è¯‘shaderå¯¹è±¡ä¹‹å‰å¿…é¡»å…ˆå®šä¹‰å®ƒçš„ä»£ç æº
     const GLchar* p[1];
-    p[0] = pShaderText;//×Ö·û´®Êı×é±£´æËùÓĞµÄshaderÔ´Âë
+    p[0] = pShaderText;//å­—ç¬¦ä¸²æ•°ç»„ä¿å­˜æ‰€æœ‰çš„shaderæºç 
     GLint Lengths[1];
     Lengths[0] = (GLint)strlen(pShaderText);
 
-    glShaderSource(ShaderObj, 1, p, Lengths);//µÚ¶ş¸ö²ÎÊıÊÇÊı×éµÄÔªËØ¸öÊı
+    glShaderSource(ShaderObj, 1, p, Lengths);//ç¬¬äºŒä¸ªå‚æ•°æ˜¯æ•°ç»„çš„å…ƒç´ ä¸ªæ•°
     glCompileShader(ShaderObj);
     GLint success;
     glGetShaderiv(ShaderObj, GL_COMPILE_STATUS, &success);
@@ -57,7 +57,7 @@ static void AddShader(GLuint ShaderProgram, const char* pShaderText, GLenum Shad
         exit(1);
     }
 
-    glAttachShader(ShaderProgram, ShaderObj);//½«±àÒëºÃµÄshdaer¶ÔÏó°óÔÚprogram onject¶ÔÏóÉÏ
+    glAttachShader(ShaderProgram, ShaderObj);//å°†ç¼–è¯‘å¥½çš„shdaerå¯¹è±¡ç»‘åœ¨program onjectå¯¹è±¡ä¸Š
 }
 
 const char* pVSFileName = "shader.vs";
@@ -71,8 +71,8 @@ static void CompileShaders()
         exit(1);
     }
 
-    //°Ñ¶¥µã×ÅÉ«Æ÷ºÍÆ¬Ôª×ÅÉ«Æ÷Á´½Óµ½×ÅÉ«Æ÷program£¬ÕâÑùÓĞ»ú»á¾«¼òÕâĞ©shader²¢ÓÅ»¯ËûÃÇ
-    std::string vs, fs;//ÒÔ×Ö·û´®Êı×éµÄĞÎÊ½ÒıÓÃ
+    //æŠŠé¡¶ç‚¹ç€è‰²å™¨å’Œç‰‡å…ƒç€è‰²å™¨é“¾æ¥åˆ°ç€è‰²å™¨programï¼Œè¿™æ ·æœ‰æœºä¼šç²¾ç®€è¿™äº›shaderå¹¶ä¼˜åŒ–ä»–ä»¬
+    std::string vs, fs;//ä»¥å­—ç¬¦ä¸²æ•°ç»„çš„å½¢å¼å¼•ç”¨
     if (!ReadFile(pVSFileName, vs)) {
         exit(1);
     };
@@ -87,14 +87,14 @@ static void CompileShaders()
 
     glLinkProgram(ShaderProgram);
 
-    //¼ì²é
+    //æ£€æŸ¥
     glGetProgramiv(ShaderProgram, GL_LINK_STATUS, &Success);
     if (Success == 0) {
         glGetProgramInfoLog(ShaderProgram, sizeof(ErrorLog), NULL, ErrorLog);
         fprintf(stderr, "Error linking shader program: '%s'\n", ErrorLog);
         exit(1);
     }
-    glValidateProgram(ShaderProgram);//¼ì²éµ±Ç°µÄ¹ÜÏß×´Ì¬ÊÇ·ñ¿ÉÒÔ±»Ö´ĞĞ
+    glValidateProgram(ShaderProgram);//æ£€æŸ¥å½“å‰çš„ç®¡çº¿çŠ¶æ€æ˜¯å¦å¯ä»¥è¢«æ‰§è¡Œ
     glGetProgramiv(ShaderProgram, GL_VALIDATE_STATUS, &Success);
     if (!Success) {
         glGetProgramInfoLog(ShaderProgram, sizeof(ErrorLog), NULL, ErrorLog);
@@ -102,7 +102,7 @@ static void CompileShaders()
         exit(1);
     }
 
-    glUseProgram(ShaderProgram);//ÉèÖÃµ½¹ÜÏßÉùÃ÷ÖĞ£¬Õâ¸ö³ÌĞò½«ÔÚËùÓĞµÄdrawcallÖĞÒ»Ö±ÉúĞ§ÖÁµ½ÄãÓÃÁíÒ»¸ö³ÌĞòÌæ»»Ëü»òÕß½ûÓÃËü
+    glUseProgram(ShaderProgram);//è®¾ç½®åˆ°ç®¡çº¿å£°æ˜ä¸­ï¼Œè¿™ä¸ªç¨‹åºå°†åœ¨æ‰€æœ‰çš„drawcallä¸­ä¸€ç›´ç”Ÿæ•ˆè‡³åˆ°ä½ ç”¨å¦ä¸€ä¸ªç¨‹åºæ›¿æ¢å®ƒæˆ–è€…ç¦ç”¨å®ƒ
 }
 
 int main(int argc, char** argv)
@@ -133,3 +133,16 @@ int main(int argc, char** argv)
 
     return 0;
 }
+
+
+
+
+//shader.vs
+/*
+#version 330 core//å‘Šè¯‰ç¼–è¯‘å™¨æˆ‘ä»¬çš„ç›®æ ‡GLSLç¼–è¯‘å™¨ç‰ˆæœ¬æ˜¯3.3
+layout (location = 0) in vec3 Position;//è¡¨ç¤ºå£°æ˜ä¸€ä¸ªvec3fçš„å…·ä½“é¡¶ç‚¹å±æ€§å°†åœ¨shaderä¸­è¢«è®¤ä¸ºæ˜¯ä¸€ä¸ªâ€˜positionâ€™ã€location = 0ä»£è¡¨ä¼ å…¥çš„å‚æ•°çš„ç¬¬0ä¸ªä½ç½®çš„å˜é‡ã€‘
+void main()
+{
+    gl_Position = vec4(0.5 * Position.x, 0.5 * Position.y, Position.z, 1.0);//ä¸ºglVertexAttributePointeræä¾›è¿”å›å€¼
+}
+*/
