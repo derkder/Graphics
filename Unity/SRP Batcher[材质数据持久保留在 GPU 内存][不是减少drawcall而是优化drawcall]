@@ -19,6 +19,8 @@ SRP Batcher 是一个低级渲染循环，它使得Material 数据长久在GPU�
 场景中多个使用相同Shader变体的mesh的位置中间穿插了使用其他Shader变体的mesh的话,合批会被打断。简单来说就是按官方说法场景中只有两个Shader变体那么只需要两个Batch就可以搞定,实际上完全不是这样
 
 
+
+
 GPU Instancing 是相同网格对象，这里是相同shader对象
 
 https://zhuanlan.zhihu.com/p/165574008
