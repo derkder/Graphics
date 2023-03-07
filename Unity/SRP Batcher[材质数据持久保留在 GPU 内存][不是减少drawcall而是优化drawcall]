@@ -1,13 +1,22 @@
 SRP Batcher使材质数据持久保留在 GPU 内存中。如果材质内容不变，SRP Batcher 不需要设置缓冲区并将缓冲区上传到 GPU。
 SRP Batcher并没有减少DrawCall，而是优化了DrawCall之前的设置开销。
+同一个shader，但是不同的材质，也能加速。
 
 
-关于研究SRP的分批是怎么分的：
+
 我们知道，真正的CPU消耗来自drawcall前的设置工作，而不是GPU drawcall本身
 SRP Batcher 通过批处理（batching）一系列绑定（Bind）和绘制(Draw)GPU 命令，来减少DrawCalls之间的GPU 设置（工作量）。
 也就是之前一堆绑定和绘制的GPU命令，老子一口气给它处理完。不需要一步步设置。
 
 
+应用：尽量多的同一个shader，但不同的材质，但是尽量少的shader变体。
+SRP Batcher 是一个低级渲染循环，它使得Material 数据长久在GPU内存里。如果Material内容不变，SRP Batcher就不需要设置并上传buffer到GPU里。
+
+
+
+
+关于研究SRP的分批是怎么分的：【不重要】
+场景中多个使用相同Shader变体的mesh的位置中间穿插了使用其他Shader变体的mesh的话,合批会被打断。简单来说就是按官方说法场景中只有两个Shader变体那么只需要两个Batch就可以搞定,实际上完全不是这样
 
 
 
