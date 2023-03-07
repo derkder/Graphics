@@ -1,0 +1,3 @@
+Overdraw是指屏幕上的某个像素在同一帧的时间内被绘制了多次。
+
+在渲染上，GPU、CPU两者的性能瓶颈往往是CPU；GPU的性能瓶颈往往是像素点填充率（Overdraw导致），CPU的性能瓶颈往往是Drawcall。所以，渲染性能排查，几项指标关注优先级应该是：Drawcall > Overdraw > 面片
