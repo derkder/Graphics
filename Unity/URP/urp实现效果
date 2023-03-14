@@ -4,3 +4,4 @@ https://docs.unity3d.com/cn/Packages/com.unity.render-pipelines.universal@12.1/m
 场景中会通过设置项目中的graphics什么的载入一个我们新建的urp_asset
 urp_asset会使用一个urp_asset_render渲染
 在urp_asset_render中我们可以添加一个又一个的feature来实现效果
+feature里面又有create函数里面可以create pass，pass可以是一个后处理pass也就是里头可以塞效果
