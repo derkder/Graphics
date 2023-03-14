@@ -1,1 +1,3 @@
 更好的前向渲染，核心就是可以先剔除以免对于一片被遮住的区域着色计算
+
+https://takahiroharada.files.wordpress.com/2015/04/forward_plus.pdf
