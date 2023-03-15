@@ -10,3 +10,9 @@ https://takahiroharada.files.wordpress.com/2015/04/forward_plus.pdf
       1  在最终着色前添加一个光照剔除阶段来扩展正向渲染管道。管道由三个阶段组成：深度预处理、光剔除和最终着色
       2  修改对灯光的数据结构，使其存储在一个从着色器可访问的线性缓冲区中，用于光线剔除和最终着色
      （2拓）使用深度prepass来减少最终着色步骤的像素透支，这个相比于延迟渲染中的G-prepass来说成本更低，因为它只填充深度缓冲区
+    详细解释第一步中的光照剔除阶段：
+      原先的延迟渲染是对于每个像素计算光照列表对他的影响，而forward+是将屏幕分割成tile瓦片来减少内存【也就是tiled-based，但其实cluster-based更好】
+    cluster-based：
+      https://zhuanlan.zhihu.com/p/404247924
+      tiled灯光使用平铺的二维空间范围和可选的几何深度边界分类，clustered着色将视锥体分成一组三维单元，称为簇(clusters)[若干互不相交的子集]。
+      
