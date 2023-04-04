@@ -1,2 +1,21 @@
 CommandBuffer保存渲染指令，并在特定渲染阶段（与渲染路径相关）执行。
 貌似Graphics.就是直接执行，这个就是先记下来，然后根据不同的渲染管线，在对应的阶段一起执行或者使用Graphics.ExecuteCommandBuffer立即执行
+
+
+Unity 中的 CommandBuffer 是一种用于延迟渲染的机制，它允许我们在渲染流水线的各个阶段中，存储和执行一系列的渲染操作指令。在 Unity 中，CommandBuffer 主要由 C# 脚本编写，用于实现一些特殊的渲染实现，例如 post-processing、自定义渲染等。
+
+使用 CommandBuffer 可以在多个相机之间共享渲染数据，也可以在场景中的多个物体之间共享渲染状态。具体来说，CommandBuffer 可以用于以下几个方面：
+
+1. 自定义渲染：通过 CommandBuffer 可以实现一些特殊的渲染效果，例如镜面反射、抗锯齿、阴影等；
+2. 后期处理：通过 CommandBuffer 可以在渲染流水线结束后，对渲染结果进行后期处理和调整；
+3. 相机管理：通过 CommandBuffer 可以自定义相机渲染，例如在相机中添加额外的渲染效果；
+4. 其他用途：CommandBuffer 还可以用于实现一些特殊的场景渲染需求，例如实现特殊的 UI 渲染、绘制特殊的图形等。
+
+使用 CommandBuffer 的基本步骤是：
+
+1. 在 Unity 中创建一个 CommandBuffer 对象；
+2. 在 CommandBuffer 对象中添加需要执行的渲染指令；
+3. 将 CommandBuffer 对象绑定到需要执行的相机或渲染目标上；
+4. 执行 CommandBuffer 中的渲染指令。
+
+总之，CommandBuffer 是 Unity 中一种用于延迟渲染的机制，通过 C# 脚本编写，可以实现自定义渲染、后期处理、相机管理等功能。使用 CommandBuffer 的基本步骤是创建 CommandBuffer 对象、添加渲染指令、绑定到相机或渲染目标上、执行渲染指令。
