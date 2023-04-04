@@ -1,0 +1,4 @@
+TextureHandle 是 Unity 中用于引用 Render Texture 的一种结构体。
+
+TextureHandle 还可以被用于在 GPU 和 CPU 之间传输数据，以及在不同的渲染 Pass 之间共享数据等操作。TextureHandle 的灵活性和高效性是 Unity 中进行纹理读写操作的重要工具之一。
+
