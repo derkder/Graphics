@@ -1,0 +1,3 @@
+xx.compute
+
+在Unity中，Compute Shader是一种用于计算的着色器类型，它不处理图形输出，而是可以在GPU上进行并行计算。Compute Shader可以用于各种计算任务，例如物理模拟、图像处理、数据分析等。
