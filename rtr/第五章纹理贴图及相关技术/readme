@@ -1,1 +1,11 @@
 各种贴图与AA
+
+Super Sampling（超采样）和Anti-Aliasing（抗锯齿）的区别：
+Super Sampling是一种更为基础的技术，它通过在渲染时对图像进行更高分辨率的采样来减少锯齿和走样的现象。在超采样中，渲染时将每个像素细分为多个子像素，并在这些子像素上进行渲染，
+然后将结果合并成一个像素。由于子像素数量更多，因此可以获得更精细的图像，从而减少锯齿和走样的现象。常见的超采样技术包括MSAA（Multisample Anti-Aliasing）和SSAA（Super Sampling Anti-Aliasing）。
+
+Anti-Aliasing则是一种更为高级的技术，它通过对像素的颜色进行插值、平滑等处理来减少锯齿和走样的现象。由于不需要对每个像素进行更多子像素的渲染，因此Anti-Aliasing对性能的影响更小。
+常见的抗锯齿技术包括FXAA（Fast Approximate Anti-Aliasing）、SMAA（Subpixel Morphological Anti-Aliasing）和TAA（Temporal Anti-Aliasing）等。
+
+
+总的来说，Super Sampling和Anti-Aliasing都可以有效减少锯齿和走样的现象，但Super Sampling需要更多的计算资源，而Anti-Aliasing则更加高效。在具体应用中，可以根据需要选择合适的技术并进行优化，以获得更好的结果。
