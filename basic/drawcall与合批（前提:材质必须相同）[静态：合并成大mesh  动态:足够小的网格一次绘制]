@@ -22,3 +22,6 @@ Dynamic Batching
   是在物件小于300面的条件下(不论物件是否为静态或动态)，在使用相同材质球下，Unity就会自动帮你合合并成一个 Batch 送往 GPU 来处理。
   在使用相同材质球的情况下，Unity会在运行时对于正在视野中的符合条件的动态对象在一个Draw call内绘制，所以会降低Draw Calls的数量。
   原理：先把顶点信息变换到世界空间中（CPU），后通过一次Draw call绘制多个模型
+
+
+drawcall的数量等于批batches的数量
