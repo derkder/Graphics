@@ -1,0 +1,82 @@
+chatgpt的解决：
+ 遍历maintexture中的每个像素点，如果有像素不是黑色的，说明被灯光照到了
+ 在Unity中，可以使用Shader来判断一个GameObject是否被场景中的灯光照到。具体方法如下：
+
+1. 创建一个新的Shader文件，并在文件中添加以下代码：
+
+```
+Shader "Custom/IsLit" {
+    Properties {
+        _MainTex ("Texture", 2D) = "white" {}
+    }
+    SubShader {
+        Tags { "RenderType" = "Opaque" }
+        LOD 100
+
+        Pass {
+            CGPROGRAM
+            #pragma vertex vert
+            #pragma fragment frag
+
+            struct appdata {
+                float4 vertex : POSITION;
+            };
+
+            struct v2f {
+                float4 vertex : SV_POSITION;
+                float4 worldPos : TEXCOORD0;
+            };
+
+            v2f vert (appdata v) {
+                v2f o;
+                o.vertex = UnityObjectToClipPos(v.vertex);
+                o.worldPos = mul(unity_ObjectToWorld, v.vertex);
+                return o;
+            }
+
+            sampler2D _MainTex;
+
+            fixed4 frag (v2f i) : SV_Target {
+                fixed4 col = tex2D(_MainTex, i.worldPos.xy);
+                if (col.a > 0) {
+                    return fixed4(1, 1, 1, 0);
+                } else {
+                    return fixed4(0, 0, 0, 0);
+                }
+            }
+            ENDCG
+        }
+    }
+}
+```
+
+2. 使用该Shader创建一个新的Material，并将其赋给需要检测的GameObject。
+
+3. 在脚本中使用以下代码来检测GameObject是否被灯光照到：
+
+```
+bool isLit = false;
+Renderer renderer = GetComponent<Renderer>();
+Material material = renderer.material;
+Texture2D texture = material.GetTexture("_MainTex") as Texture2D;
+
+for (int x = 0; x < texture.width; x++) {
+    for (int y = 0; y < texture.height; y++) {
+        if (texture.GetPixel(x, y).a > 0) {
+            isLit = true;
+            break;
+        }
+    }
+    if (isLit) {
+        break;
+    }
+}
+
+if (isLit) {
+    // GameObject被灯光照到
+} else {
+    // GameObject没有被灯光照到
+}
+```
+
+该代码会检查GameObject的Material中的_MainTex纹理，如果纹理中有一个像素被灯光照到，就认为GameObject被灯光照到了。
