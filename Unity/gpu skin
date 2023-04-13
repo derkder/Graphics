@@ -1,0 +1,14 @@
+https://www.cnblogs.com/murongxiaopifu/p/7250772.html
+背景：
+  正常情况下，大家都会使用Animator来管理角色的动画，而角色也必须使用SkinnedMeshRender来进行渲染。
+  当要渲染的动画角色数量很大时主要会有以下两个巨大的开销：
+    1、CPU在处理动画时的开销。
+    2、每个角色一个Draw Call造成的开销。
+  这样的情况下遇到的瓶颈：
+    1、角色动画的处理都集中在CPU端。因此一个简单的想法就是我们能否将这部分的开销转移到GPU上
+    2、CPU和GPU之间的Draw Call问题。如果利用批处理（包括Static Batching和Dynamic Batching）或是从Unity5.4之后引入的GPU Instancing就可以解决这个问题。但是，不幸的是这两种技术都不支持动画角色的SkinnedMeshRender。
+  解决方法思想：
+    1、将动画相关的内容从CPU转移到GPU，同时由于CPU不需要再处理动画的逻辑了。而是可以用vertex shader来处理动画的逻辑
+    2、CPU不仅省去了这部分的开销而且SkinnedMeshRender也可以替换成一般的Mesh Render，我们就可以很开心的使用GPU Instancing来减少Draw Call了。
+具体实现
+    1、
