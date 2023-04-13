@@ -8,5 +8,5 @@ TextureHandle 可以通过以下方式初始化：
 TextureHandle handle = builder.AcquireTexture(params);
 ```
 
-其中，builder 是一个 RenderPassBuilder 对象，用于构建渲染 Pass。params 是一个 TextureDesc 类型的参数，用于描述要创建的 Render Texture 的宽度、高度、格式等信息。
+其中，builder 是一个 RenderPassBuilder 对象，用于构建渲染 Pass。params 是一个 TextureDesc [RenderTextureDescriptor]类型的参数，用于描述要创建的 Render Texture 的宽度、高度、格式等信息。
 AcquireTexture 方法会返回一个 TextureHandle 对象，它代表了一个 Render Texture，可以用于后续的渲染操作。
