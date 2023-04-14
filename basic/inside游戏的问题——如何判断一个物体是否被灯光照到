@@ -1,4 +1,4 @@
-chatgpt的解决：
+一、chatgpt的解决：
  遍历maintexture中的每个像素点，如果有像素不是黑色的，说明被灯光照到了
  在Unity中，可以使用Shader来判断一个GameObject是否被场景中的灯光照到。具体方法如下：
 
@@ -92,4 +92,4 @@ if (isLit) {
 
 
 
-或者咱们就是说，搞几个light probe，然后检查里面的信息会不会更快一点儿
+二、或者咱们就是说，搞几个light probe，然后检查里面的信息会不会更快一点儿
