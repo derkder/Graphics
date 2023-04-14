@@ -1,3 +1,4 @@
+https://blog.csdn.net/u012740992/article/details/88795640
 CommandBuffer保存渲染指令，并在特定渲染阶段（与渲染路径相关）执行。
 貌似Graphics.就是直接执行，这个就是先记下来，然后根据不同的渲染管线，在对应的阶段一起执行或者使用Graphics.ExecuteCommandBuffer立即执行
 
