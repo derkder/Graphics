@@ -80,3 +80,16 @@ if (isLit) {
 ```
 
 该代码会检查GameObject的Material中的_MainTex纹理，如果纹理中有一个像素被灯光照到，就认为GameObject被灯光照到了。
+
+
+
+
+
+
+
+
+
+
+
+
+或者咱们就是说，搞几个light probe，然后检查里面的信息会不会更快一点儿
