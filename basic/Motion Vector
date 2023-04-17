@@ -3,3 +3,7 @@ Motion Vector来储存每个像素点从上一帧挪动到这一帧的位置
 常用于运动模糊motion blur----
 
 在渲染场景时，Unity会生成一张Motion Vector纹理【双通道贴图】，其中每个像素的颜色表示该像素的运动方向和速度。在后续的后处理阶段中，可以使用这个Motion Vector纹理来实现各种特效。
+
+
+在urp中开启motionVector的方法（可能有问题）：
+https://zhuanlan.zhihu.com/p/463794038
