@@ -10,8 +10,8 @@ feature里面又有create函数里面可以create pass，pass可以是一个后�
 
 
 
-
-
+！另一个添加后处理效果方式：volume：
+https://zhuanlan.zhihu.com/p/385830661
 ！一个抗锯齿TAA后处理在urp中的添加，用来参考如何添加后处理效果
 https://github.com/CMDRSpirit/URPTemporalAA
 !一个清爽的框架https://zhuanlan.zhihu.com/p/522683010
