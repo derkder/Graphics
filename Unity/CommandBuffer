@@ -42,7 +42,7 @@ Unity 中的 CommandBuffer 是一种用于延迟渲染的机制，它允许我�
 ScriptableRenderContext（可编写脚本渲染上下文）：
 指定自定义渲染管线渲染时的渲染状态和声明绘制指令，ScriptableRenderContext 负责调度和提交渲染状态的更新以及绘制指令到GPU。
 定义了自定义渲染管道所使用的状态和绘制命令。 当你定义一个自定义的RenderPipeline时，你使用一个ScriptableRenderContext来安排和提交状态更新和绘制命令给GPU。
-
+context.ExecuteCommandBuffer(cmd);
 
 
 
