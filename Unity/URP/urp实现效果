@@ -8,5 +8,9 @@ urp_asset会使用一个urp_asset_render渲染
 feature里面又有create函数里面可以create pass，pass可以是一个后处理pass也就是里头可以塞效果
 
 
-一个后处理pass的实现(但貌似只能看看，因为版本支持的原因没法复刻)
-https://zhuanlan.zhihu.com/p/414220604
+
+
+
+
+！一个抗锯齿TAA后处理在urp中的添加，用来参考如何添加后处理效果
+https://github.com/CMDRSpirit/URPTemporalAA
