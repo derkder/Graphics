@@ -14,3 +14,40 @@ feature里面又有create函数里面可以create pass，pass可以是一个后�
 
 ！一个抗锯齿TAA后处理在urp中的添加，用来参考如何添加后处理效果
 https://github.com/CMDRSpirit/URPTemporalAA
+!一个清爽的框架https://zhuanlan.zhihu.com/p/522683010
+using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
+
+public class InversColorRenderPassFeature : ScriptableRendererFeature
+{
+    #region pass
+    class InversColorRenderPass : ScriptableRenderPass
+    {
+        public override void OnCameraSetup(CommandBuffer cmd, ref RenderingData renderingData)
+        {
+            //CameraSetup
+        }
+        public override void Execute(ScriptableRenderContext context, ref RenderingData renderingData)
+        {
+            //渲染执行
+        }
+        public override void OnCameraCleanup(CommandBuffer cmd)
+        {
+            //CameraCleanup
+        }
+    }
+    #endregion
+
+    InversColorRenderPass pass;
+
+    public override void Create()
+    {
+        pass= new InversColorRenderPass();
+        pass.renderPassEvent = RenderPassEvent.AfterRenderingOpaques;
+    }
+    public override void AddRenderPasses(ScriptableRenderer renderer, ref RenderingData renderingData)
+    {
+        renderer.EnqueuePass(pass);
+    }
+}
