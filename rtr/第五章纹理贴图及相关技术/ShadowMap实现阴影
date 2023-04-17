@@ -1,0 +1,16 @@
+https://blog.csdn.net/the_shy33/article/details/120043177
+Unity内部也是用shadowmap的变种 CSM(Cascaded Shadowmap)和SSSM(Screen Space Shadowmap)**的两种阴影。
+
+shadowmap的粗略原理：
+  首先它在！！光源处！！放置一台相机，通过该相机生成一张深度图
+  然后在渲染需要接受阴影的物体时把当前渲染的点的深度与深度图里的深度比较。
+  
+  
+  
+shadowmap的具体原理：
+  
+  
+  
+  
+shadowmap的优化：pcf算法抗锯齿（解决硬阴影）
+  通过多次采样点的周围来判断该点阴影位置的权重，最后进行阴影系数的改变
