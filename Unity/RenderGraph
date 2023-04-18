@@ -20,3 +20,4 @@ Unity中的RenderGraph和CommandBuffer都是用于控制渲染过程的API，但
 
 
 RenderGraphBuilder：
+使用此结构来设置一个新的渲染通道
