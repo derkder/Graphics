@@ -1,6 +1,6 @@
 ChatGPT:
 Immediate mode和Retained mode是计算机图形学中常用的两种渲染模式。
-1. Immediate mode
+1. Immediate mode(API本身)
 Immediate mode，即直接模式，也称为即时模式或命令式渲染，是一种较为基础的渲染模式。在Immediate mode中，应用程序通过调用渲染API（如OpenGL）中的命令，直接向图形硬件传输渲染要素
 （如顶点坐标、颜色等）的信息，从而实现图形的绘制。
 Immediate mode的优点是实现简单，适用于处理简单图形，对图形硬件要求不高。但是，Immediate mode具有明显的缺点，即在每次渲染时需要将所有渲染要素都重新传输至硬件，因此效率较低，
