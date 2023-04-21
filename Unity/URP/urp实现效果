@@ -2,19 +2,12 @@
 https://docs.unity3d.com/cn/Packages/com.unity.render-pipelines.universal@12.1/manual/renderer-features/how-to-custom-effect-render-objects.html
 
 
-场景中会通过设置项目中的graphics什么的载入一个我们新建的urp_asset
-urp_asset会使用一个urp_asset_render渲染
-在urp_asset_render中我们可以添加一个又一个的feature来实现效果
-feature里面又有create函数里面可以create pass，pass可以是一个后处理pass也就是里头可以塞效果
-
-
-
 
 ！另一个添加后处理效果方式：volume：
 https://zhuanlan.zhihu.com/p/385830661
 ！一个抗锯齿TAA后处理在urp中的添加，用来参考如何添加后处理效果
 https://github.com/CMDRSpirit/URPTemporalAA
-!一个清爽的框架https://zhuanlan.zhihu.com/p/522683010
+!！！！！一个清爽的框架https://zhuanlan.zhihu.com/p/522683010[就是从外面拿一个ref RenderTargetIdentifier src，用cmdbuffer处理它]!!!!！！！
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
