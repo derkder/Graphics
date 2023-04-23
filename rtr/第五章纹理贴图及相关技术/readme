@@ -1,5 +1,13 @@
 各种贴图与AA
 
+
+抗锯齿技术可以从原理上分为两个大类：空域抗锯齿和时域抗锯齿。空域抗锯齿的代表是FXAA和SMAA，时域抗锯齿的代表就是TAA。
+
+
+
+
+
+
 Super Sampling（超采样）和Anti-Aliasing（抗锯齿）的区别：
 Super Sampling是一种更为基础的技术，它通过在渲染时对图像进行更高分辨率的采样来减少锯齿和走样的现象。在超采样中，渲染时将每个像素细分为多个子像素，并在这些子像素上进行渲染，
 然后将结果合并成一个像素。由于子像素数量更多，因此可以获得更精细的图像，从而减少锯齿和走样的现象。常见的超采样技术包括MSAA（Multisample Anti-Aliasing）和SSAA（Super Sampling Anti-Aliasing）。
