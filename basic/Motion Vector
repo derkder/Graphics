@@ -6,5 +6,6 @@ Motion Vector来储存每个像素点从上一帧挪动到这一帧的位置
 
 
 在urp中开启motionVector的方法：
-https://www.sardinefish.com/blog/458(从2021之后就不行了)
+https://www.sardinefish.com/blog/458
+其中记得修改UniversalRenderPipeline.cs中SetSupportedRenderingFeatures()的motionVectors = true,
 https://github.com/Raphael2048/URPTAA    https://zhuanlan.zhihu.com/p/463794038
