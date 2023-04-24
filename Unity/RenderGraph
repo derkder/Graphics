@@ -6,6 +6,7 @@ https://docs.unity3d.com/Packages/com.unity.render-pipelines.core@10.2/manual/re
 遇到的背景：
 对于hdrp的pass，不是urp中的传统做法，而是先写好pass，然后在hdrp.postprocess的脚本里用renderGraph去启动
 感觉这个东西是用来在外部控制xxpass的执行的
+好像相当于别人提出来的概念，unity再hdrp中拿来用
 
 
 chatGpt说的（网上找不到人类语言组织的对应资料）：
