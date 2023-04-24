@@ -1,0 +1,13 @@
+https://zhuanlan.zhihu.com/p/593205655
+pixel -> tile -> cluster
+
+
+一、Tiled Shading【每个 tile 中会保存一个光照列表索引】
+观察传统的延迟渲染管线，我们发现，每个光源进行一个 Lighting Pass 计算，会照成严重的 Overdraw，和带宽的浪费。 因此我们有如下的想法：将屏幕中的区域进行分块，
+每个分块中保存可能受到影响光照的索引，这样我们就可以使用一个 Pass 来进行所有光源的着色计算。
+
+
+
+二、cluster shading【每个cluster中会保存一个光照列表索引】
+为了解决 Tile Shading 中遇到的问题，我们进一步将视锥空间进行切分，在 z 轴上进一步进行分割。这样可以避免深度不连续导致的某个 Tile 中光照列表数量过多的问题。
+Cluster Shading 在 XY 方向上，直接根据屏幕空间的像素坐标来进行分割。在 Z 轴方向上，根据观察空间的深度值取对数来进行分割。
