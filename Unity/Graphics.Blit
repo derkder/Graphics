@@ -10,3 +10,12 @@ public static void Blit(Texture source, RenderTexture dest, Vector2 scale, Vecto
 通常情况下，Blit dest之前的内容不需要被保留下来。在这种情况下，建议使用SetRenderTarget，用适当的加载和存储动作明确地激活目的地渲染目标。
 然后Blit dest应该被设置为BuiltinRenderTextureType.CurrentActive
 所以blit不如SetRenderTarget好？
+
+
+
+
+
+
+管线中的cmd.blit
+Blit(cmd, BuiltinRenderTextureType.CurrentActive, temp1, TAAMaterial);//！！这里会把source的材质赋给TAAMaterial的_MainTex ！！！
+//Uses the material's shader to draw a full-screen surface from the source texture to the dest texture.
