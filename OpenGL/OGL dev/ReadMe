@@ -8,4 +8,4 @@ youtube channel：https://www.youtube.com/watch?v=h2cP6sQYdf0&list=PLA0dXqQjCx0S
   https://blog.csdn.net/qq_43780850/article/details/114580715?
   我的错误：在VS的编译器选择时使用了x86，显示找不到freeglut.lib，但改成x64就没事了，一定关注vs的多个编译器的坑
 2、glew
-  https://blog.csdn.net/xuguangsoft/article/details/8002375
+ 
