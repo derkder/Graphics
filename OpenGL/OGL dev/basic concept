@@ -1,7 +1,7 @@
 GLclampx: 另一种定点型，用于使用定点运算来表示0.0 到 1.0之间的实数
   e.g. clampf:0.0 到 1.0之间的浮点数
 
-GLUT:
+GLUT:[openGL Utility Library]
   为窗口管理以及事件处理、IO控制和其他一些服务提供了一个简化的API。
   
 GLEW:
