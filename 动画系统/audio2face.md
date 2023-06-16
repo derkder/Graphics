@@ -19,7 +19,7 @@
        ![Audio2face组件说明](/动画系统/imgs/audio2face组件说明.png)
 #### 具体使用方法：
 将上面说的两个组件挂在人物身上，选中人物脸部的skin mesh  renderer。生成新的profile文件，对其进行校准得到映射关系，校准使用麦克风——组件uLipSyncMicrophone， 校准使用音谱——组件uLuLipSyncMicrophone   
-上面设置了wav格式文件中的内容片段和音素对应的关系，在我们使用的插件中，每个音素对应一个blendshape参数的修改，这在瑶台人物脸部使用了51维的脸部表现显然是不合理的，因此进行重映射，映射的方式为更改脚本如下：
+上面设置了wav格式文件中的内容片段和音素对应的关系，在我们使用的插件中，每个音素对应一个blendshape参数的修改，这在瑶台人物脸部使用了51维的脸部表现显然是不合理的，因此进行重映射，映射的方式为更改脚本的核心更改如下：
 
 
        ```
@@ -27,30 +27,6 @@
         using System.Collections.Generic;        
         namespace uLipSync
         {
-            [ExecuteAlways]
-            public class uLipSyncBlendShape : AnimationBakableMonoBehaviour
-            {
-                [System.Serializable]
-                public class BlendShapeInfo
-                {
-                    public string phoneme;
-                    public int index = -1;
-                    public float maxWeight = 1f;
-                    public float weight { get; set; } = 0f;
-                    public float weightVelocity { get; set; } = 0f;
-                }   
-                public UpdateMethod updateMethod = UpdateMethod.LateUpdate;
-                public SkinnedMeshRenderer skinnedMeshRenderer;
-                public List<BlendShapeInfo> blendShapes = new List<BlendShapeInfo>();
-                public float minVolume = -2.5f;
-                public float maxVolume = -1.5f;
-                [Range(0f, 0.3f)] public float smoothness = 0.05f;
-                public bool usePhonemeBlend = false; 
-                LipSyncInfo _info = new LipSyncInfo();
-                bool _lipSyncUpdated = false;
-                float _volume = 0f;
-                float _openCloseVelocity = 0f;
-                protected float volume => _volume;     
                 public class BSInfoG
                 {
                     public int idx;
@@ -61,28 +37,7 @@
                         this.weight = _weight;
                     }
                 }
-                Dictionary<int, List<BSInfoG>> phone2bs = new Dictionary<int, List<BSInfoG>>();//每个元音对应一组bs变量
-        
-            #if UNITY_EDITOR
-                bool _isAnimationBaking = false;
-                float _animBakeDeltaTime = 1f / 60;
-            #endif       
-                void UpdateLipSync()
-                {
-                    UpdateVolume();
-                    UpdateVowels();
-                    _lipSyncUpdated = false;
-                }       
-                public void OnLipSyncUpdate(LipSyncInfo info)
-                {
-                    _info = info;
-                    _lipSyncUpdated = true;
-                    if (updateMethod == UpdateMethod.LipSyncUpdateEvent)
-                    {
-                        UpdateLipSync();
-                        OnApplyBlendShapes();
-                    }
-                }    
+                Dictionary<int, List<BSInfoG>> phone2bs = new Dictionary<int, List<BSInfoG>>();//每个元音对应一组bs变量    
                 void Start()
                 {
                     //a
@@ -142,97 +97,9 @@
                     }
                     phone2bs.Add(7, temp7);
                 }
-                void Update()
-                {
-            #if UNITY_EDITOR
-                    if (_isAnimationBaking) return;
-            #endif
-                    if (updateMethod != UpdateMethod.LipSyncUpdateEvent)
-                    {
-                        UpdateLipSync();
-                    }
-                    if (updateMethod == UpdateMethod.Update)
-                    {
-                        OnApplyBlendShapes();
-                    }
-                }
                 void LateUpdate()
                 {
-            #if UNITY_EDITOR
-                    if (_isAnimationBaking) return;
-            #endif
-                    if (updateMethod == UpdateMethod.LateUpdate)
-                    {
-                        OnApplyBlendShapes();
-                    }
-                }
-                void FixedUpdate()
-                {
-            #if UNITY_EDITOR
-                    if (_isAnimationBaking) return;
-            #endif
-                    if (updateMethod == UpdateMethod.FixedUpdate)
-                    {
-                        OnApplyBlendShapes();
-                    }
-                }
-                float SmoothDamp(float value, float target, ref float velocity)
-                {
-            #if UNITY_EDITOR
-                    if (_isAnimationBaking)
-                    {
-                        return Mathf.SmoothDamp(value, target, ref velocity, smoothness, Mathf.Infinity, _animBakeDeltaTime);
-                    }
-            #endif
-                    return Mathf.SmoothDamp(value, target, ref velocity, smoothness);
-                }
-                void UpdateVolume()
-                {
-                    float normVol = 0f;
-                    if (_lipSyncUpdated && _info.rawVolume > 0f)
-                    {
-                        normVol = Mathf.Log10(_info.rawVolume);
-                        normVol = (normVol - minVolume) / Mathf.Max(maxVolume - minVolume, 1e-4f);
-                        normVol = Mathf.Clamp(normVol, 0f, 1f);
-                    }
-                    _volume = SmoothDamp(_volume, normVol, ref _openCloseVelocity);
-                }
-                void UpdateVowels()
-                {
-                    float sum = 0f;
-                    var ratios = _info.phonemeRatios;
-        
-                    foreach (var bs in blendShapes)
-                    {
-                        float targetWeight = 0f;
-                        if (usePhonemeBlend)
-                        {
-                            if (ratios != null && !string.IsNullOrEmpty(bs.phoneme))
-                            {
-                                ratios.TryGetValue(bs.phoneme, out targetWeight);
-                            }
-                        }
-                        else
-                        {
-                            targetWeight = (bs.phoneme == _info.phoneme) ? 1f : 0f;
-                        }
-                        float weightVel = bs.weightVelocity;
-                        bs.weight = SmoothDamp(bs.weight, targetWeight, ref weightVel);
-                        bs.weightVelocity = weightVel;
-                        sum += bs.weight;
-                    }
-        
-                    foreach (var bs in blendShapes)
-                    {
-                        bs.weight = sum > 0f ? bs.weight / sum : 0f;
-                    }
-                }
-                public void ApplyBlendShapes()
-                {
-                    if (updateMethod == UpdateMethod.External)
-                    {
-                        OnApplyBlendShapes();
-                    }
+                    OnApplyBlendShapes();
                 }
                 protected virtual void OnApplyBlendShapes()
                 {
@@ -262,76 +129,9 @@
                         }
                     }
                 }
-                public BlendShapeInfo GetBlendShapeInfo(string phoneme)
-                {
-                    foreach (var info in blendShapes)
-                    {
-                        if (info.phoneme == phoneme) return info;
-                    }
-                    return null;
-                }
-                public BlendShapeInfo AddBlendShape(string phoneme, string blendShape)
-                {
-                    var bs = GetBlendShapeInfo(phoneme);
-                    if (bs == null) bs = new BlendShapeInfo() { phoneme = phoneme };
-        
-                    blendShapes.Add(bs);
-        
-                    if (!skinnedMeshRenderer) return bs;
-                    bs.index = Util.GetBlendShapeIndex(skinnedMeshRenderer, blendShape);
-        
-                    return bs;
-                }
-            #if UNITY_EDITOR
-                public override GameObject target => skinnedMeshRenderer?.gameObject;
-        
-                public override List<string> GetPropertyNames()
-                {
-                    var names = new List<string>();
-                    var mesh = skinnedMeshRenderer.sharedMesh;
-        
-                    foreach (var bs in blendShapes)
-                    {
-                        if (bs.index < 0) continue;
-                        var name = mesh.GetBlendShapeName(bs.index);
-                        name = "blendShape." + name;
-                        names.Add(name);
-                    }
-        
-                    return names;
-                }
-                public override List<float> GetPropertyWeights()
-                {
-                    var weights = new List<float>();
-        
-                    foreach (var bs in blendShapes)
-                    {
-                        if (bs.index < 0) continue;
-                        var weight = bs.weight * bs.maxWeight * volume * 100f;
-                        weights.Add(weight);
-                    }
-        
-                    return weights;
-                }
-                public override float maxWeight => 100f;
-                public override float minWeight => 0f;
-                public override void OnAnimationBakeStart()
-                {
-                    _isAnimationBaking = true;
-                }
-                public override void OnAnimationBakeUpdate(LipSyncInfo info, float dt)
-                {
-                    _info = info;
-                    _animBakeDeltaTime = dt;
-                    _lipSyncUpdated = true;
-                    UpdateLipSync();
-                }
-                public override void OnAnimationBakeEnd()
-                {
-                    _isAnimationBaking = false;
-                }
-            #endif
-            }
-        }
         ```
+
+
+### 实际效果：
+  为了防止被逮捕，放在我手机里了，其中因为对于每个音素(这里设置了8组)调一组51维的bs参数十分繁琐，以及在办公室里aaaaaiiiiiiiooooooo的通过麦克风校准很尴尬，所以效果欠佳。其实这个插件本身可以达到非常好的效果
        
