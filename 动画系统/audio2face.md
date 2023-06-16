@@ -37,22 +37,19 @@
         
                     public float weight { get; set; } = 0f;
                     public float weightVelocity { get; set; } = 0f;
-                }
-        
+                }   
                 public UpdateMethod updateMethod = UpdateMethod.LateUpdate;
                 public SkinnedMeshRenderer skinnedMeshRenderer;
                 public List<BlendShapeInfo> blendShapes = new List<BlendShapeInfo>();
                 public float minVolume = -2.5f;
                 public float maxVolume = -1.5f;
                 [Range(0f, 0.3f)] public float smoothness = 0.05f;
-                public bool usePhonemeBlend = false;
-        
+                public bool usePhonemeBlend = false; 
                 LipSyncInfo _info = new LipSyncInfo();
                 bool _lipSyncUpdated = false;
                 float _volume = 0f;
                 float _openCloseVelocity = 0f;
-                protected float volume => _volume;
-        
+                protected float volume => _volume;     
                 public class BSInfoG
                 {
                     public int idx;
@@ -68,15 +65,13 @@
             #if UNITY_EDITOR
                 bool _isAnimationBaking = false;
                 float _animBakeDeltaTime = 1f / 60;
-            #endif
-        
+            #endif       
                 void UpdateLipSync()
                 {
                     UpdateVolume();
                     UpdateVowels();
                     _lipSyncUpdated = false;
-                }
-        
+                }       
                 public void OnLipSyncUpdate(LipSyncInfo info)
                 {
                     _info = info;
@@ -86,8 +81,7 @@
                         UpdateLipSync();
                         OnApplyBlendShapes();
                     }
-                }
-        
+                }    
                 void Start()
                 {
                     //a
@@ -147,7 +141,6 @@
                     }
                     phone2bs.Add(7, temp7);
                 }
-        
                 void Update()
                 {
             #if UNITY_EDITOR
@@ -157,13 +150,11 @@
                     {
                         UpdateLipSync();
                     }
-        
                     if (updateMethod == UpdateMethod.Update)
                     {
                         OnApplyBlendShapes();
                     }
                 }
-        
                 void LateUpdate()
                 {
             #if UNITY_EDITOR
@@ -174,7 +165,6 @@
                         OnApplyBlendShapes();
                     }
                 }
-        
                 void FixedUpdate()
                 {
             #if UNITY_EDITOR
@@ -185,7 +175,6 @@
                         OnApplyBlendShapes();
                     }
                 }
-        
                 float SmoothDamp(float value, float target, ref float velocity)
                 {
             #if UNITY_EDITOR
@@ -196,7 +185,6 @@
             #endif
                     return Mathf.SmoothDamp(value, target, ref velocity, smoothness);
                 }
-        
                 void UpdateVolume()
                 {
                     float normVol = 0f;
@@ -208,7 +196,6 @@
                     }
                     _volume = SmoothDamp(_volume, normVol, ref _openCloseVelocity);
                 }
-        
                 void UpdateVowels()
                 {
                     float sum = 0f;
@@ -239,7 +226,6 @@
                         bs.weight = sum > 0f ? bs.weight / sum : 0f;
                     }
                 }
-        
                 public void ApplyBlendShapes()
                 {
                     if (updateMethod == UpdateMethod.External)
@@ -247,7 +233,6 @@
                         OnApplyBlendShapes();
                     }
                 }
-            
                 protected virtual void OnApplyBlendShapes()
                 {
                     if (!skinnedMeshRenderer) return;
@@ -276,7 +261,6 @@
                         }
                     }
                 }
-        
                 public BlendShapeInfo GetBlendShapeInfo(string phoneme)
                 {
                     foreach (var info in blendShapes)
@@ -285,7 +269,6 @@
                     }
                     return null;
                 }
-        
                 public BlendShapeInfo AddBlendShape(string phoneme, string blendShape)
                 {
                     var bs = GetBlendShapeInfo(phoneme);
@@ -298,7 +281,6 @@
         
                     return bs;
                 }
-        
             #if UNITY_EDITOR
                 public override GameObject target => skinnedMeshRenderer?.gameObject;
         
@@ -317,7 +299,6 @@
         
                     return names;
                 }
-        
                 public override List<float> GetPropertyWeights()
                 {
                     var weights = new List<float>();
@@ -331,15 +312,12 @@
         
                     return weights;
                 }
-        
                 public override float maxWeight => 100f;
                 public override float minWeight => 0f;
-        
                 public override void OnAnimationBakeStart()
                 {
                     _isAnimationBaking = true;
                 }
-        
                 public override void OnAnimationBakeUpdate(LipSyncInfo info, float dt)
                 {
                     _info = info;
@@ -347,14 +325,12 @@
                     _lipSyncUpdated = true;
                     UpdateLipSync();
                 }
-        
                 public override void OnAnimationBakeEnd()
                 {
                     _isAnimationBaking = false;
                 }
             #endif
             }
-        
         }
         ```
        
