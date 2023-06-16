@@ -20,10 +20,9 @@
 #### 具体使用方法：
 将上面说的两个组件挂在人物身上，选中人物脸部的skin mesh  renderer。生成新的profile文件，对其进行校准得到映射关系，校准使用麦克风——组件uLipSyncMicrophone， 校准使用音谱——组件uLuLipSyncMicrophone   
 上面设置了wav格式文件中的内容片段和音素对应的关系，在我们使用的插件中，每个音素对应一个blendshape参数的修改，这在瑶台人物脸部使用了51维的脸部表现显然是不合理的，因此进行重映射，映射的方式为更改脚本如下：
-       ```c#
+       ```
         using UnityEngine;
-        using System.Collections.Generic;
-        
+        using System.Collections.Generic;        
         namespace uLipSync
         {
             [ExecuteAlways]
