@@ -46,3 +46,41 @@ RenderTarget、RenderTexture、TextureHandle、RenderTargetIdentifier和RTHandle
 
 在使用这些类型时，需要根据需要选择合适的类型。如果只是简单地使用渲染目标或纹理，可以使用RenderTarget或RenderTexture。如果需要在Shader中表示纹理，可以使用TextureHandle。如果需要在Graphics.SetRenderTarget方法中指定渲染目标，可以使用RenderTargetIdentifier。如果需要更高级的功能和控制，可以使用RTHandle。
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+实际使用中,打断点一直是Texture(0):结果就是正常的！
+当您将 TextureHandle 传递给 CommandBuffer 中的渲染命令时，它将被解析为实际的 GPU 纹理资源。因此，在 Unity 编辑器中查看 TextureHandle 的值时，它将显示为 Texture(0)，这只是一个占位符，表示 TextureHandle 句柄
+将在实际渲染时被解析为实际的 GPU 纹理资源。
+所以，不用担心 TextureHandle 显示为 Texture(0)，它是正常的，只要在正确的上下文中使用它，它就会正确地表示您所需的 GPU 纹理资源。
+
+
+
+
+
+
+
+
