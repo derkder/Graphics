@@ -1,4 +1,4 @@
-GLclampx: 另一种定点型，用于使用定点运算来表示0.0 到 1.0之间的实数
+GLclampx: 数据类型，另一种定点型，用于使用定点运算来表示0.0 到 1.0之间的实数
   e.g. clampf:0.0 到 1.0之间的浮点数
 
 GLUT:[openGL Utility Library]
