@@ -1,4 +1,4 @@
-![image](https://github.com/derkder/Graphics/assets/74318555/7ae7d5d2-5ee9-4354-b3cf-4ee671f58a73)## HDR 2 LDR 
+## HDR 2 LDR 
 Tonemapping（色调映射）是一种用于将高动态范围（HDR）图像转换为低动态范围（LDR）图像的技术。由于HDR图像包含更多的亮度信息，因此需要将其转换为LDR图像，以便在普通的显示设备上显示。  
 Tonemapping技术可以帮助我们在保持图像质量和动态范围的同时，将HDR图像转换为LDR图像。  
 
@@ -17,4 +17,4 @@ Tonemapping技术的原理是调整图像的亮度和对比度，以便在LDR范
 
   
 ## 效果：
-![色调映射的效果](/imgs/色调映射的效果.png)
+![色调映射的效果](imgs/色调映射的效果.png)
