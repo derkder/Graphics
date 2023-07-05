@@ -12,9 +12,14 @@ develop：basic有其它的光源将不能影响卡通着色对象的问题，�
 
 ## 具体做法：
 1、新建材质，其中蓝图：
-    Desaturation节点将把Post Process Input和Diffuse Color转换成灰度图像，也就是去颜色      
-    用Divide节点将Post Process Input除以Diffuse Color，是我们获得光照缓存。      
-    Clamp节点是出数值介于0到1之间。     
+    Desaturation节点将把Post Process Input和Diffuse Color（这个是没有任何光照和后处理的场景，和平常说的漫反射概念不一样）转换成灰度图像，也就是去颜色,留灰度（代表颜色的深浅(光找到就浅没照到就深)）  
+    用Divide节点将Post Process Input除以Diffuse Color，是我们获得光照缓存。        
+    Clamp节点是出数值介于0到1之间。       
     使用If节点，使光照值高于0.5的像素输出正常颜色，使小于0.5的像素输出亮度减半的颜色。      
 2、使用后期处理材质Post Process Volume  
-2、使后处理在tonemapping之前进行  
+3、使后处理在tonemapping之前进行  
+4、对比自定义深度和场景深度只将人物卡通渲染  
+5、使用查找表lookoptable（LUT）对应的texture将灰度值放在三个区间里   
+
+## 补充
+最后的结果应该是同一个颜色根据该片元对应的灰度（光照量）不同，映射成三个灰度显示，而不是平滑过渡
