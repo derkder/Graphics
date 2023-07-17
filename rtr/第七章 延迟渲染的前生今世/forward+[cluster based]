@@ -1,7 +1,7 @@
 更好的前向渲染，一种通过剔除并存储对像素有贡献的光线来渲染许多光线的方法。
 
 https://takahiroharada.files.wordpress.com/2015/04/forward_plus.pdf
-
+（主要优化思路是将场景划分成多个小区域（Tiles），每个区域内只考虑该区域内的光源对该区域内的物体的影响）
 
 详述：
   实现：
