@@ -1,5 +1,6 @@
 BRDF是一个用来描述表面如何反射光线得方程
 也就是描述光如何从给定得两个方向（入射光方向l和出射方向v）在表面进行反射的函数。
 
-讲辐射度量学和渲染方程的超牛的链接：https://zhuanlan.zhihu.com/p/370162390
+讲辐射度量学和渲染方程的超牛的链接：
 https://learnopengl-cn.github.io/07%20PBR/01%20Theory/
+https://zhuanlan.zhihu.com/p/370162390
