@@ -152,7 +152,7 @@ Shader "Unlit/ChromaKey"
                     float smoothedMask = smoothstep(_Sharpening, 1, lerp(c, blurContribution, _MaskFeathering));
                     float4 result = color * smoothedMask;//本来应该是Mask，上面用一个高斯滤波平滑,优化mask
 
-                    // Despill——double blue average解决绿色溢光
+                    // Despill——double blue average解决绿色溢光: g>(b+2*r)/3?(b+2*r)/3:g
                     float v = (2 * result.b + result.r) / 3;
                     if (result.g > v) result.g = lerp(result.g, v, _Despill);
                     //增加亮度修正despill算法取得的图像偏暗
