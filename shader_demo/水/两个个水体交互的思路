@@ -1,3 +1,9 @@
+https://zhuanlan.zhihu.com/p/465551866
+和下面的思路差不多，但是更清晰点儿
+
+
+
+
 https://zhuanlan.zhihu.com/p/447311831
 粒子系统【粒子加在玩家身上，玩家就可以和水体交互了】不断发射带有波纹法线贴图的面片，然后把这些法线渲染一张RenderTexture传输到Water Shader中，然后和Water Normal 叠加即可形成水波效果。
 也就是通信靠只能观察到带有粒子的玩家的camera用绑在自己身上和水身上的rendertexture告诉水
