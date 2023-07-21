@@ -23,3 +23,7 @@ Uniform:
       main.cpp中将vs fs都塞到shaderProgram链接编译完后：
                    gScaleLocation=glGetUniformLocation(ShaderProgram,"gScale");
                    glUniform1f(gScaleLocation, sinf(Scale));
+
+
+VAO与VBO:
+我们用VBO来存储数据，而用VAO来告诉计算机这些数据分别有什么属性、起什么作用。（所以这里的A也可以解释做Attribute）
