@@ -27,3 +27,4 @@ Uniform:
 
 VAO与VBO:
 我们用VBO来存储数据，而用VAO来告诉计算机这些数据分别有什么属性、起什么作用。（所以这里的A也可以解释做Attribute）
+VBO:是 CPU 和 GPU 之间传递信息的桥梁，我们把数据存入VBO(这一步在CPU执行)，然后VBO会自动把数据送入GPU。
