@@ -1,3 +1,18 @@
-PBR（Physically Based Rendering）是一种渲染方式，它使用的材质是PBS（Physically Based Shader），中文名：基于物理的渲染技术。可以对光和材质之间的行为进行更加真实的建模。
+PBR（Physically Based Rendering）：
+是一种渲染方式，它使用的材质是PBS（Physically Based Shader），中文名：基于物理的渲染技术。可以对光和材质之间的行为进行更加真实的建模。
 在PBR中，我们也将离开物体的光分为两种，依然是高光反射和漫反射，但是我们计算它们的量的公式，会更加有说服力一些。而计算这个量的公式，就是著名的BRDF（Bidrectional Reflectional Reflectance Distribution Function双向反射分布函数），
 用于计算当一束光线沿着入射方向I到达表面某点时，有多少能量反射到了观察方向v上。BRDF也分为两项，一个是用于表示漫反射的次表面散射（SSS），还一个就是高光反射项。
+
+
+
+
+PBR的范畴：
+  基于物理的材质（Material）
+  基于物理的光照（Lighting）
+  基于物理适配的摄像机（Camera）
+
+
+
+
+
+https://zhuanlan.zhihu.com/p/53086060
