@@ -1,2 +1,6 @@
-模板测试
+模板测试https://zhuanlan.zhihu.com/p/384529130
+
+非欧：
 https://zhuanlan.zhihu.com/p/40247183
+对应的一组集合体和mask绑上不同的shader
+然后这两个shader都有_StencilMask的Properties，若值是一样的就显示
