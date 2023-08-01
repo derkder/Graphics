@@ -9,16 +9,14 @@ BRDF是一个用来描述表面如何反射光线得方程，可以近似的求�
 #### 公式
 ![渲染方程式](/rtr/第六章%20高级着色%20BRDF及相关技术/imgs/BRDF方程式.png)
 #### 另外
-讲辐射度量学和渲染方程和路径追踪的超牛的链接：
-https://zhuanlan.zhihu.com/p/370162390
-https://learnopengl-cn.github.io/07%20PBR/01%20Theory/
+讲辐射度量学和渲染方程和路径追踪的超牛的链接：  
+https://zhuanlan.zhihu.com/p/370162390  
+https://learnopengl-cn.github.io/07%20PBR/01%20Theory/  
+#### 其中的反射公式说明
+好像blinn-phong就是brdf模型反射方程的一种
 
 
-
-像blinn-phong就是brdf模型的一种
-
-
-PBR的基本流程：
+## PBR的基本流程：
 1. 定义材质属性
 在PBR中，每个材质都有一些基本属性，如反射率（albedo）、粗糙度（roughness）、金属度（metallic）、法线贴图（normal map）和环境光遮蔽（ambient occlusion）等。这些属性可以通过纹理贴图或手动设置来定义。
 2. 计算光照
