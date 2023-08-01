@@ -12,8 +12,7 @@ BRDF是一个用来描述表面如何反射光线得方程，可以近似的求�
 讲辐射度量学和渲染方程和路径追踪的超牛的链接：  
 https://zhuanlan.zhihu.com/p/370162390  
 https://learnopengl-cn.github.io/07%20PBR/01%20Theory/  
-#### 其中的反射公式说明
-好像blinn-phong就是brdf模型反射方程的一种
+
 
 
 ## PBR的基本流程：
