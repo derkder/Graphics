@@ -1,0 +1,7 @@
+### 来源
+[https://www.kodeco.com/5760-creating-snow-trails-in-unreal-engine-4]
+
+
+## 知识点
+1、camera从底向顶照射，而不是从顶向底照射解决大肚子的问题
+2、scene capture就是一个底向顶观察， 它带有后期处理材质which对所有渲染到**自定义深度开启Render CustomDepth Pass**（之前那个是用粒子层区分的）的对象进行遮罩
