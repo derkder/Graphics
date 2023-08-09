@@ -8,3 +8,6 @@
 
 ## 附：Scene Capture Component 2d + RenderTarget做小地图
 https://www.cnblogs.com/timy/p/10018848.html
+
+## 附附：
+blueprint 约等于 prefab的概念，也就是资源 + 代码，而非只是代码
