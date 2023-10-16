@@ -1,2 +1,3 @@
 nothing
 pdf改不了，但是判断点在三角形内还有第四种用质心的方法，在tinyrenderer库里的第四章写的更详细
+pdf的第三种，原理其实是，（https://zhuanlan.zhihu.com/p/521243284），AB与AP叉乘，根据右手螺旋定则，大于0说明P在AB边的左侧
