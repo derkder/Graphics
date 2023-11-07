@@ -4,3 +4,17 @@ n是法线方向，v是视线到反射点的连接方向
 dot(n,v)理解为光从眼睛发出时的lambert，中间亮边缘暗
 1-dot(n,v)反向后，中间暗边缘亮
 power：套一个power控制边缘亮的范围
+
+
+
+区别于blinn-phong的高光:
+这里菲涅尔讲述的反射和折射的权重
+高光那里讲的只是高光
+
+
+
+菲涅尔的代码：
+reflectionWeight *= fresnel()
+refractionWeight *= (1 - fresnel())
+
+注意在rayTrace中，是累乘
