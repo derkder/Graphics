@@ -15,7 +15,7 @@ https://zhuanlan.zhihu.com/p/98642798
 
 
 ## Unity在 Player Setting 里的两个功能选项 Static Batching 与 Dynamic Batching。
-### Static Batching [!并不减少drawcall数量!，虽然把每个子模型的vertex集合都合起来变成一个大vertex集合但是每个子模型还是一次drawcall；而是没有渲染状态的切换减少计算，即减少的是SetPassCall]  
+### Static Batching [** 并不减少drawcall数量 **，虽然把每个子模型的vertex集合都合起来变成一个大vertex集合但是每个子模型还是一次drawcall；而是没有渲染状态的切换减少计算，即减少的是SetPassCall]  
   是将标明为 Static 的静态物件，如果在使用相同材质球的条件下，Unity 会自动帮你把这两个物件合并成一个 Batch，送往 GPU 来处理。这功能对效能上非常的有帮助。  
   运行时cpu不需要再次执行顶点变换操作，节约了少量的计算资源，并且这些子模型共享材质，所以在多次Draw call调用之间并没有渲染状态的切换，渲染API（Command Buffer）会缓存绘制命令，起到了渲染优化的目的（每个子模型共用一个commandbuffer）   
   但Static batching也会带来一些性能的负面影响。Static batching会导致应用打包之后体积增大，应用运行时所占用的内存体积也会增大。茂密的森林就不能用   
