@@ -26,8 +26,10 @@ https://zhuanlan.zhihu.com/p/98642798
   &nbsp;&nbsp;但Static batching也会带来一些性能的负面影响。Static batching会导致应用打包之后体积增大，应用运行时所占用的内存体积也会增大。茂密的森林就不能用   
   
 ### Dynamic Batching   
-  动态合批在运行时Unity自动把每一帧画面里符合条件（**物件小于300面的条件下(不论物件是否为静态或动态)，使用相同材质球**）的多个模型网格合并为一个，减少的就是drawcall了。  
-  具体原理是，先把顶点信息变换到世界空间中（CPU），后通过一次Draw call绘制多个模型。  
+
+  &nbsp;&nbsp;动态合批在运行时Unity自动把每一帧画面里符合条件（**物件小于300面的条件下(不论物件是否为静态或动态)，使用相同材质球**）的多个模型网格合并为一个，减少的就是drawcall了。  
+  
+  &nbsp;&nbsp;具体原理是，先把顶点信息变换到世界空间中（CPU），后通过一次Draw call绘制多个模型。  
 
 
 ## drawcall的数量等于批batches的数量
