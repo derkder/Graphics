@@ -17,3 +17,7 @@ Anti-Aliasing则是一种更为高级的技术，它通过对像素的颜色进�
 
 
 总的来说，Super Sampling和Anti-Aliasing都可以有效减少锯齿和走样的现象，但Super Sampling需要更多的计算资源，而Anti-Aliasing则更加高效。在具体应用中，可以根据需要选择合适的技术并进行优化，以获得更好的结果。
+
+
+MSAA与SSAA的区别貌似就是最简单的版本:
+SSAA 对整个场景进行超采样，而 MSAA 只对几何边缘进行多重采样。
