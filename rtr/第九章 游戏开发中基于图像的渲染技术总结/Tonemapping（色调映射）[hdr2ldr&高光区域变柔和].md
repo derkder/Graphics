@@ -16,6 +16,7 @@ Tonemapping技术的原理是调整图像的亮度和对比度，以便在LDR范
 总的来说，Tonemapping技术可以帮助我们将HDR图像转换为LDR图像，并在保持图像质量和动态范围的同时，显示所有的细节和颜色。Tonemapping技术广泛应用于电影、游戏以及其他数字媒体领域。  
 
 ## Tonemap曲线：
+感觉和gamma矫正有大大的联系      
 ![Tonemap曲线果](imgs/TonemapAlgorithm.png)
   
 ## 效果：
