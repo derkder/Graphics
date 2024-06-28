@@ -27,7 +27,8 @@ Tonemapping技术的原理是调整图像的亮度和对比度，以便在LDR范
 
 ### 为什么Tonemapping之前要用linear空间
 ~方便电脑计算~
-因为blending，[看最后一部分](https://docs.unity3d.com/cn/current/Manual/LinearRendering-LinearOrGammaWorkflow.html)
+因为blending，[看最后一部分](https://docs.unity3d.com/cn/current/Manual/LinearRendering-LinearOrGammaWorkflow.html)  
+混合肯定是线性的计算，如果颜色用的不是linear而是gamma空间的SRGB的话，就是非线性的颜色用线性的混合式子算，会导致过度饱和和过亮混合
   
 ## 效果：
 ![色调映射的效果](imgs/色调映射的效果.png)
