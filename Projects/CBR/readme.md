@@ -3,7 +3,7 @@ link :[https://github.com/GameTechDev/DynamicCheckerboardRendering]
 CBR key:
 1. 2张 1/4 RT  2x msaa
 2. viewport offset       
-之前Unity的实例项目模仿源工程只给viewport + 0.25/0.75，是不对的，因为Unity会自动拉伸，所以要通过改projectionMatrix，通过看ProjectionMatrix的计算方式将l和r的值都加上（l - r） / 2 的偏移  
+之前Unity的实例项目模仿源工程只给viewport + 0.25/0.75，是不对的，因为Unity会自动拉伸，所以要通过改[projectionMatrix](https://www.songho.ca/opengl/gl_projectionmatrix.html)，通过看ProjectionMatrix的计算方式将l和r的值都加上（l - r） / 2 的偏移(这里l - r = screenwidth = 1920)     
 3. Interpolation Modifier(给渲染物体用的standard shader中的片元着色器输出的uv加sample修饰符（不是改合并CBR的shader）)  
 [https://learn.microsoft.com/zh-cn/windows/win32/direct3dhlsl/sm5-object-texture2d-gathergreen]  
 [https://learnopengl-cn.github.io/04%20Advanced%20OpenGL/11%20Anti%20Aliasing/]（一个像素点只跑一次片元着色器）  
