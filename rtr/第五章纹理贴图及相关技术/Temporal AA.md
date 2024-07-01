@@ -6,4 +6,4 @@
 同时，对投影矩阵进行半个像素距离的偏移，使得每一帧的投影矩阵与上一帧都不一样，也就相当于混合了多次采样的结果，实现超级采样，因此Temporal AA也称Temporal Super Sampler，通过抖动投影矩阵的做法被称为Jitter。
 
 ## 草图
-[TAA原理](imgs/TAA原理.jpg)
+![TAA原理](imgs/TAA原理.jpg)
