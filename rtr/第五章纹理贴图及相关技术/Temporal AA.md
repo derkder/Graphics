@@ -19,5 +19,6 @@
 
 ## 链接
 [如何解决鬼影问题](https://developer.download.nvidia.cn/gameworks/events/GDC2016/msalvi_temporal_supersampling.pdf)  
-如果历史的像素值没有落在当前的像素的邻居构造的范围内，则不是consistent的，判断为需要另外处理，用下clip
+如果历史的像素值没有落在当前的像素的邻居构造的范围内，则不是consistent的，判断为需要另外处理，用下clip   
+对于这个clip，一般把邻居的像素点放在RGB坐标系中，然后会有一个AABB包围盒，把在盒子里的当前像素值和盒子外的历史像素值连起来，得到被卡在盒子边上的点是clip的结果。然后链接里用方差构造了一个更好的AABB包围盒，称为variance clipping
 
