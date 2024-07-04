@@ -2,3 +2,5 @@ UNITY_BRANCH 用于流量控制，也就是说“使这个条件像您在编程�
 
 
 UNITY_BRANCH 的对立是 UNITY_FLATTEN，它使着色器始终运行条件的两侧，并在完成工作后选择结果。
+
+(https://forum.unity.com/threads/correct-use-of-unity_branch.476804/)
