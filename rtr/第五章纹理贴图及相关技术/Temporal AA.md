@@ -15,7 +15,12 @@
 感觉上面的说明只是孩子小不懂事写的  
 核心在于下面，对于一个像素，通过抖动投影矩阵每帧采样当前像素内不同的采样点，然后每帧做累计平均，就相当于每帧采样了一个像素内的好几个点   
 至于之前的MV贴图，只是因为像素在动所以要计算上，和TAA的核心思想没有半毛钱关系
-![TAA原理](imgs/TAA原理2.png)
+![TAA原理](imgs/TAA原理2.png)  
+##### 那么聪明的你有可能会问了，那既然投影矩阵抖动了，整个图像不就也会抖动了吗！      
+但是其实resolve一下子就好了，这里的resolve指的是float3 output = currentColor * 0.1 + previousColor * 0.9;      
+##### 那么好奇的你可能又会问了，为什么投影矩阵变成这样了，怎么推导的呢！  
+(https://www.elopezr.com/temporal-aa-and-the-quest-for-the-holy-trail/)
+ 
 
 ## 链接
 [如何解决鬼影问题](https://developer.download.nvidia.cn/gameworks/events/GDC2016/msalvi_temporal_supersampling.pdf)  
