@@ -26,3 +26,12 @@ https://www.sohu.com/a/219886389_667928【对于这个链接的内容存疑，�
 不适合改成step的情况：
 当那组像素内，如果所有c.a > 0.5的判断都返回false的话，就意味着下面那条指令计算的结果全部都会抛弃。这种时候，GPU还是会正常的跳过这条语句。
 也就是同一批像素全部c.a <= 0.5
+
+
+
+
+另外：
+ue中mobile端的源码有这样一段：（PostProcessMobile/usf 1176）
+if(abs(AaX) == 0.0) Aa1 = float2(-0.0,0.5);
+if(abs(AaX) == 0.0) Aa2 = float2(0.5,-0.0);
+难道mobile端的shader的ifelse写得越短越好？
