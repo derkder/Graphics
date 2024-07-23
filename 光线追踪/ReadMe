@@ -6,3 +6,19 @@
 找到与该光线相交的最近物体的交点，如果该点处的表面是散射面，则计算光源直接照射该点产生的颜色；
 
 如果该点处表面是镜面或者折射面，则继续向反射或折射方向跟踪另一条光线，如此递归下去，知直到光线逃逸出场景或达到设定的最大递归深度
+
+
+
+路径追踪终极框架
+radiance = 0
+thp = 1
+for(i : bounce):
+  shoot ray => hitInfo
+  sample(hitInfo)[IS] => out_dir & probability
+  brdf(hitInfo.mat, out_dir, in_dir)[DFG] -> brdf
+  thp *= brdf
+  thp /= probability
+  radiace += hitIndo.mat.emmision * thp
+color = radiance
+return color
+  
