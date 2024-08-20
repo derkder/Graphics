@@ -4,6 +4,6 @@ clamp（x，min，max）    将x限制在[min，max]范围的值，比min小返�
 fmod（x，y）    返回x对y取余的余数
 frac（x）    取x的小数部分
 modf（x，out ip）    将x分为小数和整数部分（输出的ip为整数部分，返回值为小数部分）
-lerp（x，y，s）按照s在x到y之间插值，x + s*(y-x)
+lerp（x，y，s）     （1 - t) * a + t * b
 smoothstep（min，max，x）    如果x在[min，max]范围内，就返回介于[0，1]之间的平滑Hermite插值，使用smoothstep在两个值直接创建平滑过渡eg，平滑地混合两种颜色
 ddx 、ddy        求的是 x、y方向上，相邻两个像素的某属性值的变化量
