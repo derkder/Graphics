@@ -1,4 +1,4 @@
-SRP Batcher使材质数据持久保留在 GPU 内存中。如果材质内容不变，SRP Batcher 不需要设置缓冲区并将缓冲区上传到 GPU。
+SRP Batcher使材质数据持久保留在 GPU 内存中。如果材质内容不变，SRP Batcher 不需要设置缓冲区并将缓冲区上传到 GPU。（会上说用cbuffer搞得）
 SRP Batcher并没有减少DrawCall，而是优化了DrawCall之前的设置开销。
 同一个shader，但是不同的材质，也能加速。
 
