@@ -9,7 +9,7 @@ SRP Batcher 通过批处理（batching）一系列绑定（Bind）和绘制(Draw
 也就是之前一堆绑定和绘制的GPU命令，老子一口气给它处理完。不需要一步步设置。
 
 
-应用：尽量多的同一个shader，但不同的材质，但是尽量少的shader变体。
+应用：尽量多的！！！同一个shader！！！！，但不同的材质，但是尽量少的shader变体。
 SRP Batcher 是一个低级渲染循环，!!!!!它使得Material 数据长久在GPU内存里。如果Material内容不变，SRP Batcher就不需要设置并上传buffer到GPU里!!!!!。
 
 
