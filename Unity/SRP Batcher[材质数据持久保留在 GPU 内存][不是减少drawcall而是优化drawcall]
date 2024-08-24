@@ -7,6 +7,9 @@ SRP Batcher并没有减少DrawCall，而是优化了DrawCall之前的设置开�
 我们知道，真正的CPU消耗来自drawcall前的设置工作，而不是GPU drawcall本身
 SRP Batcher 通过批处理（batching）一系列绑定（Bind）和绘制(Draw)GPU 命令，来减少DrawCalls之间的GPU 设置（bind指令）。
 也就是之前一堆绑定和绘制的GPU命令，老子一口气给它处理完。不需要一步步设置。
+即SRP Batch相比过去Standard Batch的改进之处在于：
+它使用Shader Variant而非Material作为循环的判定条件（判断render state是否改变）；
+由于每个材质球在显存里占有固定的CBuffer，CPU就免去了【Set up Cbuffer - Upload Cbuffer】的工作
 
 
 应用：尽量多的！！！同一个shader！！！！，但不同的材质，但是尽量少的shader变体。
