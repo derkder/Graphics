@@ -20,4 +20,5 @@ TBR + deferred
 原来每个片元都需要去外部显存（深度缓冲区）拿深度再渲染什么的，现在不需要！会有一个**On-chip Tile Buffe片上缓存**的东西，可以拿到深度等信息。这样完全不涉及外部显存
 
 
-![](https://zhuanlan.zhihu.com/p/390625258)
+
+https://zhuanlan.zhihu.com/p/390625258
