@@ -113,6 +113,8 @@ Froxel：     60  ×  34  × 64 层  =     130,560 次
 float depthEye = lerp(NEAR, MAX_DISTANCE, z01 * z01);   // z01 = sliceIndex / (sliceCount - 1)
 ```
 
+![深度切片分布对比](../assets/fig-depth-distribution.svg)
+
 厚度 `Δz ∝ √z`，比对数的 `Δz ∝ z` 温和得多。
 
 按 `near = 0.3`、`maxDistance = 64`、56 层算，看前 16 米分到多少切片：

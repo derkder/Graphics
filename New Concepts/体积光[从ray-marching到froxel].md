@@ -73,6 +73,8 @@ float HenyeyGreenstein(float cosTheta, float g)
 }
 ```
 
+![HG 相位函数](../assets/fig-hg-phase.svg)
+
 只有一个参数 `g`：越接近 1 越集中在前向，`g = 0` 就是各方向均匀。
 
 `cosTheta = dot(视线方向, 指向光源的方向)`。摄像机正对光源时 ≈ +1，分母最小，散射最强。
@@ -414,6 +416,8 @@ flowchart TB
     B --> C["<b>第 3 步 · 半分辨率 + 模糊</b><br/>开销砍到 1/4<br/>引出边缘漏光问题"]
     C --> D["<b>第 4 步 · Froxel + Compute</b><br/>逐体素而非逐像素<br/>约 500 倍成本下降"]
 ```
+
+![色带与抖动](../assets/fig-banding-dither.svg)
 
 | 步骤 | 解决什么 | 关键点 |
 |---|---|---|
