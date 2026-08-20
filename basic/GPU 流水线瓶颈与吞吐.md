@@ -2,7 +2,7 @@
 
 > 瓶颈是 `max(A, LS, V, T)`，不是四者相加。单个 warp 内部是串行的，但整个 core 的吞吐由最忙的那条流水线决定。
 
-**可交互模拟器：[assets/gpu-pipeline.html](../assets/gpu-pipeline.html)**（浏览器打开，拖滑块看瓶颈实时切换）
+**可交互模拟器 → [在线打开](https://derkder.github.io/Graphics/assets/gpu-pipeline.html)**（浏览器打开，拖滑块看瓶颈实时切换）
 
 ## 有几条流水线
 

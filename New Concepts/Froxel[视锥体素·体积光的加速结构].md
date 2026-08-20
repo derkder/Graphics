@@ -4,7 +4,7 @@
 >
 > 相关笔记：[Cluster 与 Z-Binning](<./Cluster与Z-Binning[视锥空间的光源剔除].md>) · [体积光](<./体积光[从ray-marching到froxel].md>)
 
-**可交互 demo：[assets/volumetric-light.html](../assets/volumetric-light.html)**（浏览器打开，拖滑块看相位函数 / 深度分布 / 色带与抖动）
+**可交互 demo → [在线打开](https://derkder.github.io/Graphics/assets/volumetric-light.html)**（拖滑块看相位函数 / 深度分布 / 色带与抖动 · [源码](../assets/volumetric-light.html)）
 
 ---
 
