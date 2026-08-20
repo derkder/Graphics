@@ -1,6 +1,6 @@
 # 体积光：从 Ray Marching 到 Froxel
 
-> 相关笔记：[Froxel](<./Froxel[视锥体素·体积光的加速结构].md>) · [Cluster 与 Z-Binning](<./Cluster与Z-Binning[视锥空间的光源剔除].md>)
+> 相关笔记：[Froxel](<./Froxel[视锥体素·体积光的加速结构].md>) · [Cluster 与 Z-Binning](<./Cluster与Z-Binning[视锥空间的光源剔除].md>) · [体积云](<./体积云[从噪声塑形到光学深度缓存].md>)
 >
 > 实现部分基于 Unity 6 (6000.0.x) + URP 17，RenderGraph 模式。
 
@@ -230,58 +230,7 @@ Shader "VolumetricLight/SimpleVolumetricLight"
 
 > 所以 `maxDistance` 不要设得比 Shadow Distance 大。
 
----
-
-## 四、URP 手写 shader 的三个坑
-
-这三个都是真实撞上过的，而且**都不容易靠读文档避开**。
-
-### 坑 1：`undeclared identifier 'LerpWhiteTo'`
-
-```
-Shader error: undeclared identifier 'LerpWhiteTo' at .../ShaderLibrary/Shadows.hlsl(327)
-```
-
-`LerpWhiteTo` 定义在 `com.unity.render-pipelines.core/ShaderLibrary/CommonMaterial.hlsl`。而 `Shadows.hlsl` 用了它却**没自己 include** —— 因为它默认调用方是 URP 自带的 Lit shader，那条链路走 `Lighting.hlsl` 会顺带带进来。
-
-手写全屏 shader 绕过了那条链路，就得自己补，而且**必须放在 `Shadows.hlsl` 之前**。
-
-### 坑 2：`TEXTURE2D_X` 也没人 include
-
-这个**不会立刻报出来** —— shader 编译器报第一个错就停，修完坑 1 才会撞上。
-
-`TEXTURE2D_X` / `SAMPLE_TEXTURE2D_X_LOD` 是 XR（VR 单趟渲双眼）专用宏，只定义在 `TextureXR.hlsl` 里，`Core.hlsl` 这条链路不包含它。
-
-不做 XR 的话，直接用普通的 `TEXTURE2D` / `SAMPLE_TEXTURE2D_LOD` 最省事，顺带能把 stereo 宏也删掉。
-
-> **可复用的经验**：URP 的 ShaderLibrary **大量存在"假设调用方已经引过某个头文件"的隐式依赖**。手写 shader 时这类错误只有真编译一次才暴露，而且一次只报一个，得一轮一轮修。
->
-> 省事的办法：动手前先 grep 一下要用的每个符号定义在哪个文件、谁 include 了它。比来回编译快得多。
-
-### 坑 3：忘记 `multi_compile`，效果**静默失效**
-
-最阴险，因为**不报任何错**。
-
-```hlsl
-// URP Shadows.hlsl
-half MainLightRealtimeShadow(float4 shadowCoord)
-{
-    #if !defined(MAIN_LIGHT_CALCULATE_SHADOWS)
-        return half(1.0);      // ← 关键字没开 → 永远"被照到"
-    #endif
-    ...
-}
-```
-
-症状：屏幕糊上一层均匀白雾、完全没有光柱。
-
-**看到这个症状，先查 `multi_compile`。**
-
-同类问题还有 `ConfigureInput(ScriptableRenderPassInput.Depth)` —— URP 默认不生成深度图（省性能），没人申报就没有。忘了写，`SampleSceneDepth` 读到空图，同样是均匀白雾 + 零报错。
-
----
-
-## 五、RenderGraph 接线
+## 四、RenderGraph 接线
 
 Unity 6 的 URP 默认关闭 Compatibility Mode，必须走 `RecordRenderGraph`。
 
@@ -361,7 +310,7 @@ URP 自己的 `FullScreenPassRendererFeature` 也是这么绕的（通过方法�
 
 ---
 
-## 六、移动端视角：为什么全屏 pass 这么贵
+## 五、移动端视角：为什么全屏 pass 这么贵
 
 移动 GPU 是 **tile-based** 架构：把屏幕切成小块，一块一块渲染，中间结果存在片上的高速 tile 内存里，画完才往主显存写一次。
 
@@ -394,7 +343,7 @@ URP 自己的 `FullScreenPassRendererFeature` 也是这么绕的（通过方法�
 
 ---
 
-## 七、算一笔账：为什么必须优化
+## 六、算一笔账：为什么必须优化
 
 1080p、每像素 32 步：
 
@@ -408,7 +357,7 @@ URP 自己的 `FullScreenPassRendererFeature` 也是这么绕的（通过方法�
 
 ---
 
-## 八、优化路线图
+## 七、优化路线图
 
 ```mermaid
 flowchart TB
@@ -440,7 +389,7 @@ flowchart TB
 
 ---
 
-## 九、参数与调试
+## 八、参数与调试
 
 | 参数 | 典型值 | 说明 |
 |---|---|---|
@@ -512,7 +461,7 @@ cosθ 从 +0.99 变成 −0.99：
 
 ---
 
-## 十、一句话总结
+## 九、一句话总结
 
 **体积光 = 沿视线切成很多小段 → 每段问"这里被光照到吗、光会往我这边弹多少、这里空气多脏" → 加起来 → 叠到画面上。**
 

@@ -2,7 +2,7 @@
 
 > Frustum + Voxel。体积光/体积雾的主流加速结构。
 >
-> 相关笔记：[Cluster 与 Z-Binning](<./Cluster与Z-Binning[视锥空间的光源剔除].md>) · [体积光](<./体积光[从ray-marching到froxel].md>)
+> 相关笔记：[Cluster 与 Z-Binning](<./Cluster与Z-Binning[视锥空间的光源剔除].md>) · [体积光](<./体积光[从ray-marching到froxel].md>) · [体积云](<./体积云[从噪声塑形到光学深度缓存].md>)
 
 **可交互 demo → [在线打开](https://derkder.github.io/Graphics/assets/volumetric-light.html)**（拖滑块看相位函数 / 深度分布 / 色带与抖动 · [源码](../assets/volumetric-light.html)）
 

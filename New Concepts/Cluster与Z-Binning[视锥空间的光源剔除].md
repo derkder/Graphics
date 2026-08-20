@@ -1,6 +1,6 @@
 # Cluster 与 Z-Binning：视锥空间的光源剔除
 
-> 相关笔记：[Froxel](<./Froxel[视锥体素·体积光的加速结构].md>) · [体积光](<./体积光[从ray-marching到froxel].md>)
+> 相关笔记：[Froxel](<./Froxel[视锥体素·体积光的加速结构].md>) · [体积光](<./体积光[从ray-marching到froxel].md>) · [体积云](<./体积云[从噪声塑形到光学深度缓存].md>)
 >
 > 本文中 URP 的实现细节均摘自 `com.unity.render-pipelines.universal@17.0.4` 公开源码。
 
