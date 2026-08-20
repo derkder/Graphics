@@ -4,6 +4,8 @@
 >
 > 实现部分基于 Unity 6 (6000.0.x) + URP 17，RenderGraph 模式。
 
+**可交互 demo：[assets/volumetric-light.html](../assets/volumetric-light.html)**（浏览器打开，拖滑块看相位函数 / 深度分布 / 色带与抖动）
+
 ---
 
 ## 一、光为什么看不见

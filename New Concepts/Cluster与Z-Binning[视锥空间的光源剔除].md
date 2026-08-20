@@ -4,6 +4,8 @@
 >
 > 本文中 URP 的实现细节均摘自 `com.unity.render-pipelines.universal@17.0.4` 公开源码。
 
+**可交互 demo：[assets/volumetric-light.html](../assets/volumetric-light.html)**（浏览器打开，拖滑块看相位函数 / 深度分布 / 色带与抖动）
+
 ---
 
 ## 一、要解决的问题

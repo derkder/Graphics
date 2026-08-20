@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>体积光 · 交互 Demo</title>
+<style>
+:root{
+  --bg:#0d1117; --bg2:#131a23; --line:#232c38; --line2:#2e3a49;
+  --tx:#c9d4e0; --tx2:#8b98a8; --tx3:#5f6b7a;
+  --hl:#ffcb6b; --hl2:#7fd1ff; --ok:#8bd48b; --warn:#ff9d7a;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; background:var(--bg); color:var(--tx);
+  font:15px/1.8 -apple-system,"Segoe UI","PingFang SC","Microsoft YaHei",sans-serif;
+  -webkit-font-smoothing:antialiased;
+}
+main{max-width:980px; margin:0 auto; padding:48px 24px 120px}
+h1{font-size:30px; margin:0 0 6px; color:#fff; font-weight:650}
+.sub{color:var(--tx3); font-size:13.5px; margin:0 0 44px}
+h2{
+  font-size:21px; margin:64px 0 10px; padding-top:20px; color:#fff;
+  font-weight:620; border-top:1px solid var(--line);
+}
+h2 .idx{color:var(--hl); font-size:13px; margin-right:10px; letter-spacing:.06em}
+p{margin:0 0 14px}
+.lead{color:var(--tx2); font-size:14px; margin-bottom:18px}
+strong{color:#fff} em{color:var(--hl); font-style:normal; font-weight:600}
+code{background:#1c242f; color:#e6edf3; padding:2px 6px; border-radius:4px;
+  font-family:Consolas,"JetBrains Mono",monospace; font-size:12.5px; border:1px solid var(--line)}
+a{color:var(--hl2)}
+
+.panel{background:var(--bg2); border:1px solid var(--line); border-radius:10px; padding:18px; margin:18px 0}
+canvas{display:block; width:100%; border-radius:6px; background:#0a0e14}
+
+.ctrl{display:flex; flex-wrap:wrap; gap:18px 26px; align-items:center; margin-top:16px;
+  padding-top:16px; border-top:1px solid var(--line)}
+.ctrl label{display:flex; align-items:center; gap:10px; font-size:13px; color:var(--tx2)}
+.ctrl input[type=range]{width:150px; accent-color:var(--hl)}
+.ctrl input[type=checkbox]{accent-color:var(--hl); width:15px; height:15px}
+.val{color:var(--hl); font-family:Consolas,monospace; font-size:12.5px; min-width:46px; display:inline-block}
+.seg{display:flex; border:1px solid var(--line2); border-radius:6px; overflow:hidden}
+.seg button{
+  background:transparent; border:0; color:var(--tx2); padding:5px 14px;
+  font:inherit; font-size:12.5px; cursor:pointer; transition:.15s;
+}
+.seg button.on{background:var(--hl); color:#0d1117; font-weight:600}
+.seg button:not(.on):hover{background:#1c242f; color:var(--tx)}
+
+.stat{display:flex; flex-wrap:wrap; gap:10px; margin-top:14px}
+.stat div{
+  background:#111823; border:1px solid var(--line); border-radius:6px;
+  padding:8px 14px; font-family:Consolas,monospace; font-size:12.5px; color:var(--tx2);
+}
+.stat b{color:var(--hl); font-weight:600}
+.stat .g{color:var(--ok)} .stat .r{color:var(--warn)}
+
+.note{margin:16px 0; padding:12px 16px; border-left:3px solid var(--hl2);
+  background:var(--bg2); border-radius:6px; font-size:13.5px}
+.note b{color:var(--hl2); display:block; margin-bottom:4px}
+.foot{margin-top:80px; padding-top:20px; border-top:1px solid var(--line);
+  color:var(--tx3); font-size:12.5px}
+</style>
+</head>
+<body>
+<main>
+
+<h1>体积光 · 交互 Demo</h1>
+<p class="sub">
+  配套笔记：<a href="../New Concepts/体积光[从ray-marching到froxel].md">体积光</a> ·
+  <a href="../New Concepts/Froxel[视锥体素·体积光的加速结构].md">Froxel</a> ·
+  <a href="../New Concepts/Cluster与Z-Binning[视锥空间的光源剔除].md">Cluster 与 Z-Binning</a><br>
+  这三个东西讲一万字不如拖一下滑块。GitHub 网页不渲染 HTML，请下载后本地打开，或用 GitHub Pages。
+</p>
+
+<!-- ============================================================ -->
+<h2 id="d1"><span class="idx">DEMO 1</span>Henyey-Greenstein 相位函数</h2>
+<p class="lead">
+  相位函数描述「光被空气颗粒弹开后，各个方向上分别弹了多少」。下面这个花瓣形状就是它 ——
+  <em>离中心越远表示往那个方向散射得越多</em>。
+</p>
+
+<div class="panel">
+  <canvas id="c1" width="880" height="420"></canvas>
+  <div class="ctrl">
+    <label>各向异性 g <input type="range" id="g1" min="-0.95" max="0.95" step="0.01" value="0.6"><span class="val" id="g1v">0.60</span></label>
+    <label>视线方向 <input type="range" id="a1" min="0" max="180" step="1" value="15"><span class="val" id="a1v">15°</span></label>
+  </div>
+  <div class="stat">
+    <div>cos θ = <b id="s1a">—</b></div>
+    <div>phase = <b id="s1b">—</b></div>
+    <div>相对最强方向 = <b id="s1c">—</b></div>
+  </div>
+</div>
+
+<div class="note">
+  <b>怎么玩</b>
+  把 <code>g</code> 拖到 0 —— 花瓣变成正圆，意思是往哪个方向弹都一样多，画面会变得很平很假。<br>
+  把 <code>g</code> 拖到 0.9 —— 花瓣被压成一根朝向光源的细刺，只有几乎正对光源才看得到散射。<br>
+  拖「视线方向」到 180°（背对光源），看 phase 掉到多小 —— 这就是为什么背光时光柱基本消失。
+</div>
+
+<!-- ============================================================ -->
+<h2 id="d2"><span class="idx">DEMO 2</span>深度切片分布：均匀 / 平方 / 对数</h2>
+<p class="lead">
+  同样的切片数，切法不同，精度分配天差地别。每一根竖线是一个切片边界，<em>线越密的地方精度越高</em>。
+</p>
+
+<div class="panel">
+  <canvas id="c2" width="880" height="260"></canvas>
+  <div class="ctrl">
+    <label>切片数 <input type="range" id="n2" min="8" max="128" step="4" value="56"><span class="val" id="n2v">56</span></label>
+    <label>最远距离 <input type="range" id="f2" min="20" max="400" step="4" value="64"><span class="val" id="f2v">64 m</span></label>
+    <label>统计前 <input type="range" id="m2" min="2" max="60" step="1" value="16"><span class="val" id="m2v">16 m</span></label>
+  </div>
+  <div class="stat">
+    <div>均匀：前 <span id="s2m">16</span>m 占 <b id="s2a">—</b></div>
+    <div>平方：前 <span id="s2m2">16</span>m 占 <b class="g" id="s2b">—</b></div>
+    <div>对数：前 <span id="s2m3">16</span>m 占 <b id="s2c">—</b></div>
+  </div>
+</div>
+
+<div class="note">
+  <b>为什么 froxel 用平方、cluster 用对数</b>
+  把「最远距离」拉到 <code>400 m</code>（cluster 的典型量程）—— 均匀分布几乎把所有切片都扔给了远处，对数则把它们拽回近处，这时对数明显更合理。<br>
+  把「最远距离」调回 <code>64 m</code>（froxel 的典型量程）—— 动态范围小了，对数就显得过于激进，把 70%+ 的切片压在最近处，远处只剩十几层，光柱后半段会出色带。<em>平方是这两者之间的折中。</em>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="d3"><span class="idx">DEMO 3</span>Ray Marching：色带、抖动、以及 Froxel 的浪费</h2>
+<p class="lead">
+  俯视图。相机在底部，光从右上方射来，中间一排柱子挡光。
+  亮的区域是被照到的空气，暗的是阴影。下方的长条是最终「渲染」出来的一维画面。
+</p>
+
+<div class="panel">
+  <canvas id="c3" width="880" height="520"></canvas>
+  <div class="ctrl">
+    <div class="seg" id="mode3">
+      <button data-m="ray" class="on">逐像素采样</button>
+      <button data-m="froxel">Froxel 网格</button>
+    </div>
+    <label>步数 <input type="range" id="s3" min="4" max="64" step="1" value="32"><span class="val" id="s3v">32</span></label>
+    <label><input type="checkbox" id="d3"> 抖动 dithering</label>
+    <label><input type="checkbox" id="p3" checked> 显示采样点</label>
+  </div>
+  <div class="stat" id="stat3"></div>
+</div>
+
+<div class="note">
+  <b>怎么玩</b>
+  <b style="display:inline;color:var(--warn)">① 看色带：</b>把「步数」拖到 6~10，看下方长条里出现一道道台阶 —— 这就是采样太稀的直接后果。<br>
+  <b style="display:inline;color:var(--ok)">② 看抖动：</b>保持低步数，勾上「抖动」。台阶变成了细噪点。<em>总采样数一点没变</em>，但观感好得多 —— 人眼对噪点的容忍度远高于对规律条纹的容忍度。这就是第 2 步优化的全部原理。<br>
+  <b style="display:inline;color:var(--hl2)">③ 看浪费：</b>切到「Froxel 网格」。注意相邻视线的采样点几乎重合 —— 上百条视线在重复测量同一块空气。Froxel 就是把这些重复合并成一次。
+</div>
+
+<div class="foot">
+  纯前端，无外部依赖。所有计算都在浏览器里实时跑。
+</div>
+
+</main>
+
+<script>
+const TX='#c9d4e0', TX3='#5f6b7a', HL='#ffcb6b', HL2='#7fd1ff', OK='#8bd48b';
+function dpi(cv){
+  const r=window.devicePixelRatio||1, w=cv.width, h=cv.height;
+  cv.style.height=(h*(cv.clientWidth/w))+'px';
+  cv.width=w*r; cv.height=h*r;
+  const g=cv.getContext('2d'); g.scale(r,r); cv.LW=w; cv.LH=h; return g;
+}
+const hg=(c,g)=>{const g2=g*g,d=1+g2-2*g*c;return (1-g2)/(4*Math.PI*Math.pow(Math.max(d,1e-4),1.5));};
+
+/* ============ DEMO 1 : HG 相位函数 ============ */
+(function(){
+  const cv=document.getElementById('c1'), g=dpi(cv), W=cv.LW, H=cv.LH;
+  const gS=document.getElementById('g1'), aS=document.getElementById('a1');
+  function draw(){
+    const gg=+gS.value, ang=+aS.value*Math.PI/180;
+    document.getElementById('g1v').textContent=gg.toFixed(2);
+    document.getElementById('a1v').textContent=(+aS.value)+'°';
+    g.clearRect(0,0,W,H);
+    const cx=W/2, cy=H/2;
+    // 自动缩放：让最强方向占固定长度
+    let mx=0; for(let i=0;i<=360;i++){mx=Math.max(mx,hg(Math.cos(i*Math.PI/180),gg));}
+    const sc=165/mx;
+    // 网格
+    g.strokeStyle='#1c2530'; g.lineWidth=1;
+    for(const r of [55,110,165]){g.beginPath();g.arc(cx,cy,r,0,7);g.stroke();}
+    g.beginPath();g.moveTo(cx-200,cy);g.lineTo(cx+200,cy);g.moveTo(cx,cy-190);g.lineTo(cx,cy+190);g.stroke();
+    // 花瓣：角度 0 = 指向光源(+x)
+    g.beginPath();
+    for(let i=0;i<=360;i++){
+      const t=i*Math.PI/180, r=hg(Math.cos(t),gg)*sc;
+      const x=cx+Math.cos(t)*r, y=cy-Math.sin(t)*r;
+      i?g.lineTo(x,y):g.moveTo(x,y);
+    }
+    g.closePath();
+    const grd=g.createRadialGradient(cx,cy,0,cx,cy,170);
+    grd.addColorStop(0,'rgba(255,203,107,.42)'); grd.addColorStop(1,'rgba(255,203,107,.05)');
+    g.fillStyle=grd; g.fill();
+    g.strokeStyle=HL; g.lineWidth=2; g.stroke();
+    // 指向光源
+    arrow(g,cx,cy,cx+195,cy,HL2,2);
+    g.fillStyle=HL2; g.font='12px Consolas'; g.textAlign='left';
+    g.fillText('指向光源 lightDir',cx+120,cy-12);
+    // 视线方向
+    const vx=cx+Math.cos(ang)*195, vy=cy-Math.sin(ang)*195;
+    arrow(g,cx,cy,vx,vy,'#fff',2);
+    g.fillStyle='#fff'; g.textAlign=ang>Math.PI/2?'right':'left';
+    g.fillText('视线 rayDir',vx+(ang>Math.PI/2?-8:8),vy-8);
+    // 该方向上的散射强度
+    const pv=hg(Math.cos(ang),gg), pr=pv*sc;
+    g.beginPath(); g.arc(cx+Math.cos(ang)*pr, cy-Math.sin(ang)*pr, 6,0,7);
+    g.fillStyle='#fff'; g.fill();
+    g.strokeStyle='#0a0e14'; g.lineWidth=2; g.stroke();
+    // 数值
+    document.getElementById('s1a').textContent=Math.cos(ang).toFixed(3);
+    document.getElementById('s1b').textContent=pv.toFixed(4);
+    document.getElementById('s1c').textContent=(pv/mx*100).toFixed(1)+'%';
+    g.fillStyle=TX3; g.font='12px Consolas'; g.textAlign='center';
+    g.fillText('θ = 视线与「指向光源」的夹角',cx,H-14);
+  }
+  function arrow(g,x0,y0,x1,y1,col,w){
+    g.strokeStyle=col; g.lineWidth=w; g.beginPath(); g.moveTo(x0,y0); g.lineTo(x1,y1); g.stroke();
+    const a=Math.atan2(y1-y0,x1-x0);
+    g.beginPath(); g.moveTo(x1,y1);
+    g.lineTo(x1-10*Math.cos(a-0.4),y1-10*Math.sin(a-0.4));
+    g.lineTo(x1-10*Math.cos(a+0.4),y1-10*Math.sin(a+0.4));
+    g.closePath(); g.fillStyle=col; g.fill();
+  }
+  gS.oninput=aS.oninput=draw; draw();
+})();
+
+/* ============ DEMO 2 : 深度切片分布 ============ */
+(function(){
+  const cv=document.getElementById('c2'), g=dpi(cv), W=cv.LW, H=cv.LH;
+  const nS=document.getElementById('n2'), fS=document.getElementById('f2'), mS=document.getElementById('m2');
+  const NEAR=0.3;
+  const modes=[
+    {name:'均匀  Δz 恒定',        f:(t,far)=>NEAR+(far-NEAR)*t,          col:'#8b98a8'},
+    {name:'平方  Δz ∝ √z  (froxel)', f:(t,far)=>NEAR+(far-NEAR)*t*t,     col:OK},
+    {name:'对数  Δz ∝ z   (cluster)',f:(t,far)=>NEAR*Math.pow(far/NEAR,t),col:HL2}
+  ];
+  function draw(){
+    const N=+nS.value, far=+fS.value, mark=Math.min(+mS.value,far);
+    document.getElementById('n2v').textContent=N;
+    document.getElementById('f2v').textContent=far+' m';
+    document.getElementById('m2v').textContent=mark+' m';
+    ['s2m','s2m2','s2m3'].forEach(id=>document.getElementById(id).textContent=mark);
+    g.clearRect(0,0,W,H);
+    const L=118, R=W-30, rowH=62;
+    modes.forEach((m,mi)=>{
+      const y=34+mi*rowH;
+      g.fillStyle=m.col; g.font='12px Consolas'; g.textAlign='right';
+      g.fillText(m.name,L-14,y+5);
+      // 底轴
+      g.strokeStyle='#1c2530'; g.lineWidth=1;
+      g.beginPath(); g.moveTo(L,y+16); g.lineTo(R,y+16); g.stroke();
+      // 切片线
+      let cnt=0;
+      for(let k=0;k<=N;k++){
+        const d=m.f(k/N,far), x=L+(d-NEAR)/(far-NEAR)*(R-L);
+        if(d<=mark) cnt++;
+        g.strokeStyle=d<=mark?m.col:'rgba(255,255,255,.16)';
+        g.lineWidth=1;
+        g.beginPath(); g.moveTo(x,y-13); g.lineTo(x,y+13); g.stroke();
+      }
+      // 标记线
+      const mx=L+(mark-NEAR)/(far-NEAR)*(R-L);
+      g.strokeStyle=HL; g.lineWidth=1.5; g.setLineDash([4,3]);
+      g.beginPath(); g.moveTo(mx,y-20); g.lineTo(mx,y+20); g.stroke(); g.setLineDash([]);
+      const pct=(cnt/(N+1)*100);
+      document.getElementById(['s2a','s2b','s2c'][mi]).textContent=pct.toFixed(0)+'%';
+      g.fillStyle=m.col; g.font='11px Consolas'; g.textAlign='left';
+      g.fillText(pct.toFixed(0)+'%',mx+6,y-8);
+    });
+    g.fillStyle=TX3; g.font='11px Consolas'; g.textAlign='left';
+    g.fillText(NEAR+' m',L,H-16);
+    g.textAlign='right'; g.fillText(far+' m',R,H-16);
+    g.textAlign='center'; g.fillStyle=HL;
+    g.fillText('虚线 = '+mark+' m，左侧为「近处」切片',(L+R)/2,H-16);
+  }
+  nS.oninput=fS.oninput=mS.oninput=draw; draw();
+})();
+
+/* ============ DEMO 3 : Ray marching / Froxel ============ */
+(function(){
+  const cv=document.getElementById('c3'), g=dpi(cv), W=cv.LW, H=cv.LH;
+  const sS=document.getElementById('s3'), dC=document.getElementById('d3'), pC=document.getElementById('p3');
+  const SCENE_H=430, STRIP_Y=452, STRIP_H=44;
+  const CAM={x:W/2,y:SCENE_H-16}, HALF=42*Math.PI/180, MAXD=372, NRAY=176;
+  const SUN=(()=>{const v=[0.30,-1];const l=Math.hypot(v[0],v[1]);return [v[0]/l,v[1]/l];})();
+  // 遮挡柱
+  const BARS=[];
+  for(let i=0;i<7;i++) BARS.push({x:W/2-3.5*84+i*84+27,y:96,w:30,h:118});
+  let mode='ray';
+
+  function hitsBar(px,py,dx,dy,b){
+    let tmin=-Infinity,tmax=Infinity;
+    if(Math.abs(dx)<1e-9){if(px<b.x||px>b.x+b.w)return false;}
+    else{let t1=(b.x-px)/dx,t2=(b.x+b.w-px)/dx;if(t1>t2){const t=t1;t1=t2;t2=t;}tmin=Math.max(tmin,t1);tmax=Math.min(tmax,t2);}
+    if(Math.abs(dy)<1e-9){if(py<b.y||py>b.y+b.h)return false;}
+    else{let t1=(b.y-py)/dy,t2=(b.y+b.h-py)/dy;if(t1>t2){const t=t1;t1=t2;t2=t;}tmin=Math.max(tmin,t1);tmax=Math.min(tmax,t2);}
+    return tmax>=Math.max(tmin,0);
+  }
+  const lit=(x,y)=>{for(const b of BARS) if(hitsBar(x,y,SUN[0],SUN[1],b)) return 0; return 1;};
+
+  // 光场背景（只算一次）。画到离屏 canvas 再 drawImage —— putImageData 会无视
+  // 主 canvas 的 DPI 缩放变换，高分屏上会把图缩到左上角。
+  let bgCv=null;
+  function buildBG(){
+    bgCv=document.createElement('canvas'); bgCv.width=W; bgCv.height=SCENE_H;
+    const bctx=bgCv.getContext('2d');
+    const bg=bctx.createImageData(W,SCENE_H);
+    const d=bg.data, S=2;
+    for(let y=0;y<SCENE_H;y+=S) for(let x=0;x<W;x+=S){
+      const L=lit(x,y);
+      const r=L?58:14, gg=L?66:20, b=L?86:32;
+      for(let dy=0;dy<S&&y+dy<SCENE_H;dy++) for(let dx=0;dx<S&&x+dx<W;dx++){
+        const i=((y+dy)*W+(x+dx))*4; d[i]=r; d[i+1]=gg; d[i+2]=b; d[i+3]=255;
+      }
+    }
+    bctx.putImageData(bg,0,0);
+  }
+  const hash=n=>{const s=Math.sin(n*127.1)*43758.5453; return s-Math.floor(s);};
+
+  function march(ri,dir,steps,dither){
+    const step=MAXD/steps, j=dither?hash(ri):0.5;
+    let acc=0;
+    for(let i=0;i<steps;i++){
+      const t=(i+j)*step;
+      acc+=lit(CAM.x+dir[0]*t, CAM.y+dir[1]*t)*step;
+    }
+    return acc/MAXD;
+  }
+
+  function draw(){
+    const steps=+sS.value, dither=dC.checked, showPts=pC.checked;
+    document.getElementById('s3v').textContent=steps;
+    if(!bgCv) buildBG();
+    g.clearRect(0,0,W,H);
+    g.drawImage(bgCv,0,0);
+    // 柱子
+    g.fillStyle='#0a0e14'; g.strokeStyle='#39465a'; g.lineWidth=1;
+    for(const b of BARS){g.fillRect(b.x,b.y,b.w,b.h);g.strokeRect(b.x,b.y,b.w,b.h);}
+    // 太阳方向指示：光的【传播】方向 = -SUN（SUN 是「指向太阳」）
+    g.strokeStyle=HL; g.lineWidth=1.5; g.setLineDash([6,5]); g.globalAlpha=.65;
+    for(let i=0;i<5;i++){
+      const sx=120+i*180, sy=6;
+      g.beginPath(); g.moveTo(sx,sy); g.lineTo(sx-SUN[0]*70, sy-SUN[1]*70); g.stroke();
+    }
+    g.setLineDash([]); g.globalAlpha=1;
+    g.fillStyle=HL; g.font='12px Consolas'; g.textAlign='left';
+    g.fillText('☀ 光照方向',12,20);
+
+    let sampleCount=0;
+    if(mode==='ray'){
+      for(let r=0;r<NRAY;r++){
+        const t=r/(NRAY-1), a=-HALF+2*HALF*t;
+        const dir=[Math.sin(a),-Math.cos(a)];
+        if(showPts&&r%9===0){
+          g.strokeStyle='rgba(127,209,255,.30)'; g.lineWidth=1;
+          g.beginPath(); g.moveTo(CAM.x,CAM.y);
+          g.lineTo(CAM.x+dir[0]*MAXD,CAM.y+dir[1]*MAXD); g.stroke();
+          const st=MAXD/steps, j=dither?hash(r):0.5;
+          for(let i=0;i<steps;i++){
+            const d=(i+j)*st, x=CAM.x+dir[0]*d, y=CAM.y+dir[1]*d;
+            if(y<0)break;
+            g.fillStyle=lit(x,y)?'rgba(255,203,107,.95)':'rgba(120,140,170,.45)';
+            g.beginPath(); g.arc(x,y,1.9,0,7); g.fill();
+          }
+        }
+      }
+      sampleCount=NRAY*steps;
+      stat([
+        ['视线数', NRAY],
+        ['每条步数', steps],
+        ['总采样', sampleCount.toLocaleString(), 'r']
+      ]);
+    }else{
+      const AN=18, DN=14;
+      for(let d=0;d<DN;d++){
+        const t0=d/DN, t1=(d+1)/DN;
+        const r0=MAXD*t0*t0, r1=MAXD*t1*t1;  // 平方分布
+        for(let a=0;a<AN;a++){
+          const a0=-HALF+2*HALF*a/AN, a1=-HALF+2*HALF*(a+1)/AN;
+          const p=(ang,rr)=>[CAM.x+Math.sin(ang)*rr, CAM.y-Math.cos(ang)*rr];
+          const A=p(a0,r0),B=p(a1,r0),C=p(a1,r1),D=p(a0,r1);
+          const mid=p((a0+a1)/2,(r0+r1)/2);
+          const L=lit(mid[0],mid[1]);
+          g.beginPath(); g.moveTo(A[0],A[1]); g.lineTo(B[0],B[1]);
+          g.lineTo(C[0],C[1]); g.lineTo(D[0],D[1]); g.closePath();
+          g.fillStyle=L?'rgba(255,203,107,.20)':'rgba(120,140,170,.06)';
+          g.fill();
+          g.strokeStyle='rgba(127,209,255,.28)'; g.lineWidth=.8; g.stroke();
+          if(showPts){
+            g.fillStyle=L?'rgba(255,203,107,.95)':'rgba(120,140,170,.5)';
+            g.beginPath(); g.arc(mid[0],mid[1],2.2,0,7); g.fill();
+          }
+        }
+      }
+      sampleCount=AN*DN;
+      stat([
+        ['格子数', AN+' × '+DN+' = '+sampleCount, 'g'],
+        ['同等逐像素', (NRAY*steps).toLocaleString(), 'r'],
+        ['便宜', (NRAY*steps/sampleCount).toFixed(0)+' 倍', 'g']
+      ]);
+    }
+    // 相机
+    g.fillStyle='#fff'; g.beginPath(); g.arc(CAM.x,CAM.y,5,0,7); g.fill();
+    g.fillStyle=TX; g.font='12px Consolas'; g.textAlign='center';
+    g.fillText('相机',CAM.x,CAM.y+18);
+
+    // 结果长条
+    g.fillStyle=TX3; g.font='11px Consolas'; g.textAlign='left';
+    g.fillText('↓ 最终「渲染」出的一维画面（沿视线累加的被照亮路程）',0,STRIP_Y-8);
+    const bw=W/NRAY;
+    for(let r=0;r<NRAY;r++){
+      const t=r/(NRAY-1), a=-HALF+2*HALF*t;
+      const v=march(r,[Math.sin(a),-Math.cos(a)],steps,dither);
+      const c=Math.min(255,Math.round(v*470));
+      g.fillStyle='rgb('+c+','+Math.round(c*.93)+','+Math.round(c*.78)+')';
+      g.fillRect(r*bw,STRIP_Y,bw+1,STRIP_H);
+    }
+    g.strokeStyle=cvBorder(); g.lineWidth=1; g.strokeRect(0,STRIP_Y,W,STRIP_H);
+  }
+  const cvBorder=()=>'#232c38';
+  function stat(rows){
+    document.getElementById('stat3').innerHTML=rows.map(r=>
+      '<div>'+r[0]+' = <b'+(r[2]?' class="'+r[2]+'"':'')+'>'+r[1]+'</b></div>').join('');
+  }
+  document.querySelectorAll('#mode3 button').forEach(b=>b.onclick=()=>{
+    document.querySelectorAll('#mode3 button').forEach(x=>x.classList.remove('on'));
+    b.classList.add('on'); mode=b.dataset.m; draw();
+  });
+  sS.oninput=draw; dC.onchange=draw; pC.onchange=draw;
+  draw();
+})();
+</script>
+</body>
+</html>
