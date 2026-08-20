@@ -266,6 +266,126 @@ public override void RecordRenderGraph(RenderGraph renderGraph, ContextContainer
 }
 ```
 
+### `Execute()` 去哪了
+
+从老 API 转过来的人第一个疑问通常是这个：**找不到 `Execute` 了。**
+
+它没消失，是被**拆成了两半**：
+
+| | 老 API | RenderGraph |
+|---|---|---|
+| 申报要用什么资源 | 和执行混在一起 | `RecordRenderGraph` 里 |
+| 真正下渲染命令 | `override void Execute(...)` | `SetRenderFunc(...)` **注册**进去的那个函数 |
+| 执行时机 | 写完立刻跑 | 引擎统筹完整帧之后才跑 |
+
+所以 `SetRenderFunc` 里那个 lambda 指向的函数**就是老的 Execute**，只是名字由你自己起、不是 `override` 基类方法、执行时机被推迟。
+
+真正干活的那半长这样：
+
+```csharp
+private static void ExecutePass(PassData data, RasterGraphContext ctx)
+{
+    var s = data.settings;
+
+    // C# 不会链式套用两次自定义隐式转换，必须先落到 RTHandle 这一层
+    RTHandle source = data.source;
+
+    s_PropertyBlock.Clear();
+    s_PropertyBlock.SetTexture(s_BlitTextureId, source);
+    s_PropertyBlock.SetFloat(s_IntensityId,   s.intensity);
+    s_PropertyBlock.SetFloat(s_DensityId,     s.density);
+    s_PropertyBlock.SetFloat(s_AnisotropyId,  s.anisotropy);
+    s_PropertyBlock.SetFloat(s_MaxDistanceId, s.maxDistance);
+    s_PropertyBlock.SetFloat(s_StepCountId,   s.stepCount);
+
+    // 3 个顶点 = 一个盖住全屏的大三角形
+    ctx.cmd.DrawProcedural(Matrix4x4.identity, data.material, 0,
+        MeshTopology.Triangles, 3, 1, s_PropertyBlock);
+}
+```
+
+### 为什么最后是「画一个三角形」
+
+这里有个很根本、但很少被明说的事实：
+
+> **GPU 没有「对每个像素跑一段代码」这种指令。它只会画三角形。**
+
+那想让 ray marching 对屏幕每个像素跑一遍怎么办？唯一的办法是**画一个盖住整个屏幕的三角形**，让光栅化器把它拆成一堆像素，每个像素自动触发一次 fragment shader。
+
+打个比方：你想让全班每个人填一份问卷，但手上唯一的工具是「铺纸机」，只能往教室里铺纸。于是你铺一张盖住整个教室的大纸，纸压到谁头上谁就填一份。**纸不是目的，是让每个人被触发一次的手段。**
+
+所以那个三角形**没有任何几何意义**，它只是 fragment shader 的载体。真正干活的是 `Frag` 函数。
+
+#### 没有网格，顶点是现算的
+
+```csharp
+ctx.cmd.DrawProcedural(Matrix4x4.identity, material, 0,
+    MeshTopology.Triangles, 3, 1, propertyBlock);
+//                         ↑  ↑
+//                    3 个顶点，1 个实例 —— 注意没有传任何 Mesh
+```
+
+vertex shader 的唯一输入就是「我是第几个顶点」：
+
+```hlsl
+struct Attributes { uint vertexID : SV_VertexID; };   // 0 / 1 / 2
+```
+
+`GetFullScreenTriangleVertexPosition` 内部（`core/ShaderLibrary/Common.hlsl`）：
+
+```hlsl
+float2 uv  = float2((vertexID << 1) & 2, vertexID & 2);
+float4 pos = float4(uv * 2.0 - 1.0, z, 1.0);
+```
+
+代进去得到三个顶点：
+
+| vertexID | uv | NDC 位置 |
+|---|---|---|
+| 0 | (0, 0) | **(−1, −1)** |
+| 1 | (2, 0) | **( 3, −1)** |
+| 2 | (0, 2) | **(−1,  3)** |
+
+屏幕在 NDC 里是 `[-1,1]²`，而三角形顶点跑到了 3 —— **它比屏幕大得多，屏幕只是它左下角被切出来的一块**：
+
+```
+     (-1, 3)
+       │╲
+       │  ╲
+       │    ╲
+ ┌─────┼──────╲        ← 方框 = 屏幕 [-1,1]²
+ │     │        ╲
+ └─────┼──────────╲
+     (-1,-1)     (3,-1)
+```
+
+超出屏幕的部分被裁掉，不产生任何像素。
+
+#### 为什么是 3 个顶点不是 6 个
+
+覆盖屏幕最直观的方式是画个矩形 = 2 个三角形 = 6 个顶点。但大家都用 1 个大三角形。
+
+原因是 **GPU 按 2×2 像素块（quad）调度 fragment shader**。四边形方案在对角线上有一条接缝，横跨接缝的 2×2 块会被两个三角形各调度一次 —— 那条对角线上的像素被着色两次。大三角形没有接缝。
+
+#### 完整的执行顺序
+
+「画全屏三角形」不是 pass 之前的某个准备步骤，**它就是这个 pass 的全部**：
+
+```
+DrawProcedural 发出
+     │
+     ├─ ① Vertex shader 跑 3 次（vertexID = 0/1/2）→ 得到三角形三个角
+     │
+     ├─ ② 光栅化器：算出这个三角形盖住了哪些像素
+     │
+     ├─ ③ Fragment shader 对每个被盖住的像素跑一次
+     │        └─ ray marching 在这里，一个像素一条视线
+     │
+     └─ ④ 每个像素的返回值写进 SetRenderAttachment 指定的那张纹理
+```
+
+没有「先画三角形，再做体积光」这个先后关系 —— **体积光就是在第 ③ 步、在三角形覆盖的每个像素上算出来的**。
+
 ### 为什么要这么写
 
 引擎拿到整帧的依赖图之后能干三件你手动做不到的事：
